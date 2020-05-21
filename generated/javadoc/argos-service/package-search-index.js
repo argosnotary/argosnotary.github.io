@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"com.rabobank.argos.service"},{"l":"com.rabobank.argos.service.security"},{"l":"com.rabobank.argos.service.security.oauth2"},{"l":"com.rabobank.argos.service.security.oauth2.user"},{"l":"com.rabobank.argos.service.swagger"}]
