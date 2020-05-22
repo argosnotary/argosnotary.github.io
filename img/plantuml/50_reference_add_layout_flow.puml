@@ -18,6 +18,9 @@
 
 caption Manage a Layout on a Supply Chain
 
+skinparam shadowing<<with_shadow>> true
+skinparam backgroundColor #SeaShell
+
 actor personalAccount as account
 participant browser as client
 participant "Argos Notary" as argos

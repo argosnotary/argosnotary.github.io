@@ -18,6 +18,9 @@
 
 caption Verification request on Argos Notary
 
+skinparam shadowing<<with_shadow>> true
+skinparam backgroundColor #SeaShell
+
 actor account
 participant client as client
 participant "Argos Notary" as argos
