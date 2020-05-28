@@ -842,13 +842,9 @@ ul.nav-tabs {
     // Script section to load models into a JS Var
     var defs = {}
     defs["ApprovalConfiguration"] = {
-  "required" : [ "artifactCollectors", "segmentName", "stepName" ],
+  "required" : [ "artifactCollectorSpecifications", "segmentName", "stepName" ],
   "type" : "object",
   "properties" : {
-    "approvalConfigurationId" : {
-      "pattern" : "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}?$",
-      "type" : "string"
-    },
     "stepName" : {
       "pattern" : "^([A-Za-z0-9_-]*)?$",
       "type" : "string"
@@ -858,6 +854,7 @@ ul.nav-tabs {
       "type" : "string"
     },
     "artifactCollectorSpecifications" : {
+      "minItems" : 1,
       "type" : "array",
       "items" : {
         "$ref" : "#/components/schemas/ArtifactCollectorSpecification"
@@ -883,7 +880,7 @@ ul.nav-tabs {
   }
 };
     defs["ArtifactCollectorSpecification"] = {
-  "required" : [ "name", "type", "uri" ],
+  "required" : [ "context", "name", "type", "uri" ],
   "type" : "object",
   "properties" : {
     "name" : {
@@ -898,6 +895,13 @@ ul.nav-tabs {
       "type" : "string",
       "description" : "base url of the artifact collector server",
       "format" : "uri"
+    },
+    "context" : {
+      "type" : "object",
+      "additionalProperties" : {
+        "type" : "string"
+      },
+      "description" : "additional key value pair attributes that can very per collector type for XLDEPLOY the key is 'applicationName'"
     }
   }
 };
@@ -1474,20 +1478,14 @@ ul.nav-tabs {
                     <li data-group="Layout" data-name="createOrUpdateLayout" class="">
                       <a href="#api-Layout-createOrUpdateLayout">createOrUpdateLayout</a>
                     </li>
-                    <li data-group="Layout" data-name="deleteApprovalConfiguration" class="">
-                      <a href="#api-Layout-deleteApprovalConfiguration">deleteApprovalConfiguration</a>
-                    </li>
-                    <li data-group="Layout" data-name="getApprovalConfiguration" class="">
-                      <a href="#api-Layout-getApprovalConfiguration">getApprovalConfiguration</a>
-                    </li>
                     <li data-group="Layout" data-name="getApprovalConfigurations" class="">
                       <a href="#api-Layout-getApprovalConfigurations">getApprovalConfigurations</a>
                     </li>
+                    <li data-group="Layout" data-name="getApprovalsForAccount" class="">
+                      <a href="#api-Layout-getApprovalsForAccount">getApprovalsForAccount</a>
+                    </li>
                     <li data-group="Layout" data-name="getLayout" class="">
                       <a href="#api-Layout-getLayout">getLayout</a>
-                    </li>
-                    <li data-group="Layout" data-name="updateApprovalConfiguration" class="">
-                      <a href="#api-Layout-updateApprovalConfiguration">updateApprovalConfiguration</a>
                     </li>
                     <li data-group="Layout" data-name="validateLayout" class="">
                       <a href="#api-Layout-validateLayout">validateLayout</a>
@@ -5643,891 +5641,6 @@ $(document).ready(function() {
                         </article>
                       </div>
                       <hr>
-                    <div id="api-Layout-deleteApprovalConfiguration">
-                      <article id="api-Layout-deleteApprovalConfiguration-0" data-group="User" data-name="deleteApprovalConfiguration" data-version="0">
-                        <div class="pull-left">
-                          <h1>deleteApprovalConfiguration</h1>
-                          <p>deletes an approvalconfiguration</p>
-                        </div>
-                        <div class="pull-right"></div>
-                        <div class="clearfix"></div>
-                        <p></p>
-                        <p class="marked"></p>
-                        <p></p>
-                        <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="delete"><code><span class="pln">/supplychain/{supplyChainId}/layout/approvalconfig/{approvalConfigurationId}</span></code></pre>
-                        <p>
-                          <h3>Usage and SDK Samples</h3>
-                        </p>
-                        <ul class="nav nav-tabs nav-tabs-examples">
-                          <li class="active"><a href="#examples-Layout-deleteApprovalConfiguration-0-curl">Curl</a></li>
-                          <li class=""><a href="#examples-Layout-deleteApprovalConfiguration-0-java">Java</a></li>
-                          <li class=""><a href="#examples-Layout-deleteApprovalConfiguration-0-android">Android</a></li>
-                          <!--<li class=""><a href="#examples-Layout-deleteApprovalConfiguration-0-groovy">Groovy</a></li>-->
-                          <li class=""><a href="#examples-Layout-deleteApprovalConfiguration-0-objc">Obj-C</a></li>
-                          <li class=""><a href="#examples-Layout-deleteApprovalConfiguration-0-javascript">JavaScript</a></li>
-                          <!--<li class=""><a href="#examples-Layout-deleteApprovalConfiguration-0-angular">Angular</a></li>-->
-                          <li class=""><a href="#examples-Layout-deleteApprovalConfiguration-0-csharp">C#</a></li>
-                          <li class=""><a href="#examples-Layout-deleteApprovalConfiguration-0-php">PHP</a></li>
-                          <li class=""><a href="#examples-Layout-deleteApprovalConfiguration-0-perl">Perl</a></li>
-                          <li class=""><a href="#examples-Layout-deleteApprovalConfiguration-0-python">Python</a></li>
-                          <li class=""><a href="#examples-Layout-deleteApprovalConfiguration-0-rust">Rust</a></li>
-                        </ul>
-
-                        <div class="tab-content">
-                          <div class="tab-pane active" id="examples-Layout-deleteApprovalConfiguration-0-curl">
-                            <pre class="prettyprint"><code class="language-bsh">curl -X DELETE -H "Accept: application/json" -H "Authorization: Basic [[basicHash]]" "https://raw.githubusercontent.com/api/supplychain/{supplyChainId}/layout/approvalconfig/{approvalConfigurationId}"</code></pre>
-                          </div>
-                          <div class="tab-pane" id="examples-Layout-deleteApprovalConfiguration-0-java">
-                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.*;
-import org.openapitools.client.auth.*;
-import org.openapitools.client.model.*;
-import org.openapitools.client.api.LayoutApi;
-
-import java.io.File;
-import java.util.*;
-
-public class LayoutApiExample {
-
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        
-        // Configure HTTP basic authorization: bearerAuth
-        HttpBasicAuth bearerAuth = (HttpBasicAuth) defaultClient.getAuthentication("bearerAuth");
-        bearerAuth.setUsername("YOUR USERNAME");
-        bearerAuth.setPassword("YOUR PASSWORD");
-        // Configure HTTP bearer authorization: bearerAuth
-        HttpBearerAuth bearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("bearerAuth");
-        bearerAuth.setBearerToken("BEARER TOKEN");
-
-        LayoutApi apiInstance = new LayoutApi();
-        String supplyChainId = supplyChainId_example; // String | supply chain id
-        String approvalConfigurationId = approvalConfigurationId_example; // String | approval configuration id
-        try {
-            apiInstance.deleteApprovalConfiguration(supplyChainId, approvalConfigurationId);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling LayoutApi#deleteApprovalConfiguration");
-            e.printStackTrace();
-        }
-    }
-}
-</code></pre>
-                          </div>
-
-                          <div class="tab-pane" id="examples-Layout-deleteApprovalConfiguration-0-android">
-                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.api.LayoutApi;
-
-public class LayoutApiExample {
-
-    public static void main(String[] args) {
-        LayoutApi apiInstance = new LayoutApi();
-        String supplyChainId = supplyChainId_example; // String | supply chain id
-        String approvalConfigurationId = approvalConfigurationId_example; // String | approval configuration id
-        try {
-            apiInstance.deleteApprovalConfiguration(supplyChainId, approvalConfigurationId);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling LayoutApi#deleteApprovalConfiguration");
-            e.printStackTrace();
-        }
-    }
-}</code></pre>
-                          </div>
-  <!--
-  <div class="tab-pane" id="examples-Layout-deleteApprovalConfiguration-0-groovy">
-  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-  </div> -->
-                            <div class="tab-pane" id="examples-Layout-deleteApprovalConfiguration-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
-// Configure HTTP basic authorization (authentication scheme: bearerAuth)
-[apiConfig setUsername:@"YOUR_USERNAME"];
-[apiConfig setPassword:@"YOUR_PASSWORD"];
-
-String *supplyChainId = supplyChainId_example; // supply chain id (default to null)
-String *approvalConfigurationId = approvalConfigurationId_example; // approval configuration id (default to null)
-
-LayoutApi *apiInstance = [[LayoutApi alloc] init];
-
-// deletes an approvalconfiguration
-[apiInstance deleteApprovalConfigurationWith:supplyChainId
-    approvalConfigurationId:approvalConfigurationId
-              completionHandler: ^(NSError* error) {
-                            if (error) {
-                                NSLog(@"Error: %@", error);
-                            }
-                        }];
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Layout-deleteApprovalConfiguration-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var ArgosService = require('argos_service');
-var defaultClient = ArgosService.ApiClient.instance;
-
-// Configure HTTP basic authorization: bearerAuth
-var bearerAuth = defaultClient.authentications['bearerAuth'];
-bearerAuth.username = 'YOUR USERNAME'
-bearerAuth.password = 'YOUR PASSWORD'
-
-var api = new ArgosService.LayoutApi()
-var supplyChainId = supplyChainId_example; // {String} supply chain id
-var approvalConfigurationId = approvalConfigurationId_example; // {String} approval configuration id
-
-var callback = function(error, data, response) {
-  if (error) {
-    console.error(error);
-  } else {
-    console.log('API called successfully.');
-  }
-};
-api.deleteApprovalConfiguration(supplyChainId, approvalConfigurationId, callback);
-</code></pre>
-                            </div>
-
-                            <!--<div class="tab-pane" id="examples-Layout-deleteApprovalConfiguration-0-angular">
-              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-            </div>-->
-                            <div class="tab-pane" id="examples-Layout-deleteApprovalConfiguration-0-csharp">
-                              <pre class="prettyprint"><code class="language-cs">using System;
-using System.Diagnostics;
-using Org.OpenAPITools.Api;
-using Org.OpenAPITools.Client;
-using Org.OpenAPITools.Model;
-
-namespace Example
-{
-    public class deleteApprovalConfigurationExample
-    {
-        public void main()
-        {
-            
-            // Configure HTTP basic authorization: bearerAuth
-            Configuration.Default.Username = "YOUR_USERNAME";
-            Configuration.Default.Password = "YOUR_PASSWORD";
-
-            var apiInstance = new LayoutApi();
-            var supplyChainId = supplyChainId_example;  // String | supply chain id (default to null)
-            var approvalConfigurationId = approvalConfigurationId_example;  // String | approval configuration id (default to null)
-
-            try
-            {
-                // deletes an approvalconfiguration
-                apiInstance.deleteApprovalConfiguration(supplyChainId, approvalConfigurationId);
-            }
-            catch (Exception e)
-            {
-                Debug.Print("Exception when calling LayoutApi.deleteApprovalConfiguration: " + e.Message );
-            }
-        }
-    }
-}
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Layout-deleteApprovalConfiguration-0-php">
-                              <pre class="prettyprint"><code class="language-php"><&#63;php
-require_once(__DIR__ . '/vendor/autoload.php');
-
-// Configure HTTP basic authorization: bearerAuth
-OpenAPITools\Client\Configuration::getDefaultConfiguration()->setUsername('YOUR_USERNAME');
-OpenAPITools\Client\Configuration::getDefaultConfiguration()->setPassword('YOUR_PASSWORD');
-
-$api_instance = new OpenAPITools\Client\Api\LayoutApi();
-$supplyChainId = supplyChainId_example; // String | supply chain id
-$approvalConfigurationId = approvalConfigurationId_example; // String | approval configuration id
-
-try {
-    $api_instance->deleteApprovalConfiguration($supplyChainId, $approvalConfigurationId);
-} catch (Exception $e) {
-    echo 'Exception when calling LayoutApi->deleteApprovalConfiguration: ', $e->getMessage(), PHP_EOL;
-}
-?></code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Layout-deleteApprovalConfiguration-0-perl">
-                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
-use WWW::OPenAPIClient::Configuration;
-use WWW::OPenAPIClient::LayoutApi;
-
-# Configure HTTP basic authorization: bearerAuth
-$WWW::OPenAPIClient::Configuration::username = 'YOUR_USERNAME';
-$WWW::OPenAPIClient::Configuration::password = 'YOUR_PASSWORD';
-
-my $api_instance = WWW::OPenAPIClient::LayoutApi->new();
-my $supplyChainId = supplyChainId_example; # String | supply chain id
-my $approvalConfigurationId = approvalConfigurationId_example; # String | approval configuration id
-
-eval { 
-    $api_instance->deleteApprovalConfiguration(supplyChainId => $supplyChainId, approvalConfigurationId => $approvalConfigurationId);
-};
-if ($@) {
-    warn "Exception when calling LayoutApi->deleteApprovalConfiguration: $@\n";
-}</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Layout-deleteApprovalConfiguration-0-python">
-                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
-import time
-import openapi_client
-from openapi_client.rest import ApiException
-from pprint import pprint
-
-# Configure HTTP basic authorization: bearerAuth
-openapi_client.configuration.username = 'YOUR_USERNAME'
-openapi_client.configuration.password = 'YOUR_PASSWORD'
-
-# create an instance of the API class
-api_instance = openapi_client.LayoutApi()
-supplyChainId = supplyChainId_example # String | supply chain id (default to null)
-approvalConfigurationId = approvalConfigurationId_example # String | approval configuration id (default to null)
-
-try: 
-    # deletes an approvalconfiguration
-    api_instance.delete_approval_configuration(supplyChainId, approvalConfigurationId)
-except ApiException as e:
-    print("Exception when calling LayoutApi->deleteApprovalConfiguration: %s\n" % e)</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Layout-deleteApprovalConfiguration-0-rust">
-                              <pre class="prettyprint"><code class="language-rust">extern crate LayoutApi;
-
-pub fn main() {
-    let supplyChainId = supplyChainId_example; // String
-    let approvalConfigurationId = approvalConfigurationId_example; // String
-
-    let mut context = LayoutApi::Context::default();
-    let result = client.deleteApprovalConfiguration(supplyChainId, approvalConfigurationId, &context).wait();
-    println!("{:?}", result);
-
-}
-</code></pre>
-                            </div>
-                          </div>
-
-                          <h2>Scopes</h2>
-                          <table>
-                            
-                          </table>
-
-                          <h2>Parameters</h2>
-
-                            <div class="methodsubtabletitle">Path parameters</div>
-                            <table id="methodsubtable">
-                                <tr>
-                                  <th width="150px">Name</th>
-                                  <th>Description</th>
-                                </tr>
-                                  <tr><td style="width:150px;">supplyChainId*</td>
-<td>
-
-
-    <div id="d2e199_deleteApprovalConfiguration_supplyChainId">
-        <div class="json-schema-view">
-            <div class="primitive">
-                <span class="type">
-                    String
-                </span>
-
-                    <div class="inner description marked">
-supply chain id
-                    </div>
-            </div>
-                <div class="inner required">
-                    Required
-                </div>
-        </div>
-    </div>
-</td>
-</tr>
-
-                                  <tr><td style="width:150px;">approvalConfigurationId*</td>
-<td>
-
-
-    <div id="d2e199_deleteApprovalConfiguration_approvalConfigurationId">
-        <div class="json-schema-view">
-            <div class="primitive">
-                <span class="type">
-                    String
-                </span>
-
-                    <div class="inner description marked">
-approval configuration id
-                    </div>
-            </div>
-                <div class="inner required">
-                    Required
-                </div>
-        </div>
-    </div>
-</td>
-</tr>
-
-                            </table>
-
-
-
-
-
-                          <h2>Responses</h2>
-                            <h3 id="examples-Layout-deleteApprovalConfiguration-title-204"></h3>
-                            <p id="examples-Layout-deleteApprovalConfiguration-description-204" class="marked"></p>
-                            <script>
-                              var responseLayout204_description = `deleted successfully`;
-                              var responseLayout204_description_break = responseLayout204_description.indexOf('\n');
-                              if (responseLayout204_description_break == -1) {
-                                $("#examples-Layout-deleteApprovalConfiguration-title-204").text("Status: 204 - " + responseLayout204_description);
-                              } else {
-                                $("#examples-Layout-deleteApprovalConfiguration-title-204").text("Status: 204 - " + responseLayout204_description.substring(0, responseLayout204_description_break));
-                                $("#examples-Layout-deleteApprovalConfiguration-description-204").html(responseLayout204_description.substring(responseLayout204_description_break));
-                              }
-                            </script>
-
-
-                            <ul id="responses-detail-Layout-deleteApprovalConfiguration-204" class="nav nav-tabs nav-tabs-examples" >
-
-
-                            </ul>
-
-
-                            <div class="tab-content" id="responses-Layout-deleteApprovalConfiguration-204-wrapper" style='margin-bottom: 10px;'>
-                            </div>
-                            <h3 id="examples-Layout-deleteApprovalConfiguration-title-500"></h3>
-                            <p id="examples-Layout-deleteApprovalConfiguration-description-500" class="marked"></p>
-                            <script>
-                              var responseLayout500_description = `server error`;
-                              var responseLayout500_description_break = responseLayout500_description.indexOf('\n');
-                              if (responseLayout500_description_break == -1) {
-                                $("#examples-Layout-deleteApprovalConfiguration-title-500").text("Status: 500 - " + responseLayout500_description);
-                              } else {
-                                $("#examples-Layout-deleteApprovalConfiguration-title-500").text("Status: 500 - " + responseLayout500_description.substring(0, responseLayout500_description_break));
-                                $("#examples-Layout-deleteApprovalConfiguration-description-500").html(responseLayout500_description.substring(responseLayout500_description_break));
-                              }
-                            </script>
-
-
-                            <ul id="responses-detail-Layout-deleteApprovalConfiguration-500" class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-Layout-deleteApprovalConfiguration-500-schema">Schema</a>
-                                </li>
-
-
-
-
-                            </ul>
-
-
-                            <div class="tab-content" id="responses-Layout-deleteApprovalConfiguration-500-wrapper" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-Layout-deleteApprovalConfiguration-500-schema">
-                                  <div id="responses-Layout-deleteApprovalConfiguration-schema-500" class="exampleStyle">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = {
-  "description" : "server error",
-  "content" : {
-    "application/json" : {
-      "schema" : {
-        "$ref" : "#/components/schemas/Error"
-      }
-    }
-  }
-};
-                                        var schema = findNode('schema',schemaWrapper).schema;
-                                        if (!schema) {
-                                            schema = schemaWrapper.schema;
-                                        }
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                        } else if (schema.items != null && schema.items.$ref != null) {
-                                            schema.items = defsParser.$refs.get(schema.items.$ref);
-                                        } else {
-                                          schemaWrapper.definitions = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-Layout-deleteApprovalConfiguration-500-schema-data').val(JSON.stringify(schema));
-                                        var result = $('#responses-Layout-deleteApprovalConfiguration-schema-500');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-Layout-deleteApprovalConfiguration-500-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-                        </article>
-                      </div>
-                      <hr>
-                    <div id="api-Layout-getApprovalConfiguration">
-                      <article id="api-Layout-getApprovalConfiguration-0" data-group="User" data-name="getApprovalConfiguration" data-version="0">
-                        <div class="pull-left">
-                          <h1>getApprovalConfiguration</h1>
-                          <p>updates an approval configuration for a segment step</p>
-                        </div>
-                        <div class="pull-right"></div>
-                        <div class="clearfix"></div>
-                        <p></p>
-                        <p class="marked"></p>
-                        <p></p>
-                        <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/supplychain/{supplyChainId}/layout/approvalconfig/{approvalConfigurationId}</span></code></pre>
-                        <p>
-                          <h3>Usage and SDK Samples</h3>
-                        </p>
-                        <ul class="nav nav-tabs nav-tabs-examples">
-                          <li class="active"><a href="#examples-Layout-getApprovalConfiguration-0-curl">Curl</a></li>
-                          <li class=""><a href="#examples-Layout-getApprovalConfiguration-0-java">Java</a></li>
-                          <li class=""><a href="#examples-Layout-getApprovalConfiguration-0-android">Android</a></li>
-                          <!--<li class=""><a href="#examples-Layout-getApprovalConfiguration-0-groovy">Groovy</a></li>-->
-                          <li class=""><a href="#examples-Layout-getApprovalConfiguration-0-objc">Obj-C</a></li>
-                          <li class=""><a href="#examples-Layout-getApprovalConfiguration-0-javascript">JavaScript</a></li>
-                          <!--<li class=""><a href="#examples-Layout-getApprovalConfiguration-0-angular">Angular</a></li>-->
-                          <li class=""><a href="#examples-Layout-getApprovalConfiguration-0-csharp">C#</a></li>
-                          <li class=""><a href="#examples-Layout-getApprovalConfiguration-0-php">PHP</a></li>
-                          <li class=""><a href="#examples-Layout-getApprovalConfiguration-0-perl">Perl</a></li>
-                          <li class=""><a href="#examples-Layout-getApprovalConfiguration-0-python">Python</a></li>
-                          <li class=""><a href="#examples-Layout-getApprovalConfiguration-0-rust">Rust</a></li>
-                        </ul>
-
-                        <div class="tab-content">
-                          <div class="tab-pane active" id="examples-Layout-getApprovalConfiguration-0-curl">
-                            <pre class="prettyprint"><code class="language-bsh">curl -X GET -H "Accept: application/json" -H "Authorization: Basic [[basicHash]]" "https://raw.githubusercontent.com/api/supplychain/{supplyChainId}/layout/approvalconfig/{approvalConfigurationId}"</code></pre>
-                          </div>
-                          <div class="tab-pane" id="examples-Layout-getApprovalConfiguration-0-java">
-                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.*;
-import org.openapitools.client.auth.*;
-import org.openapitools.client.model.*;
-import org.openapitools.client.api.LayoutApi;
-
-import java.io.File;
-import java.util.*;
-
-public class LayoutApiExample {
-
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        
-        // Configure HTTP basic authorization: bearerAuth
-        HttpBasicAuth bearerAuth = (HttpBasicAuth) defaultClient.getAuthentication("bearerAuth");
-        bearerAuth.setUsername("YOUR USERNAME");
-        bearerAuth.setPassword("YOUR PASSWORD");
-        // Configure HTTP bearer authorization: bearerAuth
-        HttpBearerAuth bearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("bearerAuth");
-        bearerAuth.setBearerToken("BEARER TOKEN");
-
-        LayoutApi apiInstance = new LayoutApi();
-        String supplyChainId = supplyChainId_example; // String | supply chain id
-        String approvalConfigurationId = approvalConfigurationId_example; // String | approval configuration id
-        try {
-            ApprovalConfiguration result = apiInstance.getApprovalConfiguration(supplyChainId, approvalConfigurationId);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling LayoutApi#getApprovalConfiguration");
-            e.printStackTrace();
-        }
-    }
-}
-</code></pre>
-                          </div>
-
-                          <div class="tab-pane" id="examples-Layout-getApprovalConfiguration-0-android">
-                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.api.LayoutApi;
-
-public class LayoutApiExample {
-
-    public static void main(String[] args) {
-        LayoutApi apiInstance = new LayoutApi();
-        String supplyChainId = supplyChainId_example; // String | supply chain id
-        String approvalConfigurationId = approvalConfigurationId_example; // String | approval configuration id
-        try {
-            ApprovalConfiguration result = apiInstance.getApprovalConfiguration(supplyChainId, approvalConfigurationId);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling LayoutApi#getApprovalConfiguration");
-            e.printStackTrace();
-        }
-    }
-}</code></pre>
-                          </div>
-  <!--
-  <div class="tab-pane" id="examples-Layout-getApprovalConfiguration-0-groovy">
-  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-  </div> -->
-                            <div class="tab-pane" id="examples-Layout-getApprovalConfiguration-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
-// Configure HTTP basic authorization (authentication scheme: bearerAuth)
-[apiConfig setUsername:@"YOUR_USERNAME"];
-[apiConfig setPassword:@"YOUR_PASSWORD"];
-
-String *supplyChainId = supplyChainId_example; // supply chain id (default to null)
-String *approvalConfigurationId = approvalConfigurationId_example; // approval configuration id (default to null)
-
-LayoutApi *apiInstance = [[LayoutApi alloc] init];
-
-// updates an approval configuration for a segment step
-[apiInstance getApprovalConfigurationWith:supplyChainId
-    approvalConfigurationId:approvalConfigurationId
-              completionHandler: ^(ApprovalConfiguration output, NSError* error) {
-                            if (output) {
-                                NSLog(@"%@", output);
-                            }
-                            if (error) {
-                                NSLog(@"Error: %@", error);
-                            }
-                        }];
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Layout-getApprovalConfiguration-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var ArgosService = require('argos_service');
-var defaultClient = ArgosService.ApiClient.instance;
-
-// Configure HTTP basic authorization: bearerAuth
-var bearerAuth = defaultClient.authentications['bearerAuth'];
-bearerAuth.username = 'YOUR USERNAME'
-bearerAuth.password = 'YOUR PASSWORD'
-
-var api = new ArgosService.LayoutApi()
-var supplyChainId = supplyChainId_example; // {String} supply chain id
-var approvalConfigurationId = approvalConfigurationId_example; // {String} approval configuration id
-
-var callback = function(error, data, response) {
-  if (error) {
-    console.error(error);
-  } else {
-    console.log('API called successfully. Returned data: ' + data);
-  }
-};
-api.getApprovalConfiguration(supplyChainId, approvalConfigurationId, callback);
-</code></pre>
-                            </div>
-
-                            <!--<div class="tab-pane" id="examples-Layout-getApprovalConfiguration-0-angular">
-              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-            </div>-->
-                            <div class="tab-pane" id="examples-Layout-getApprovalConfiguration-0-csharp">
-                              <pre class="prettyprint"><code class="language-cs">using System;
-using System.Diagnostics;
-using Org.OpenAPITools.Api;
-using Org.OpenAPITools.Client;
-using Org.OpenAPITools.Model;
-
-namespace Example
-{
-    public class getApprovalConfigurationExample
-    {
-        public void main()
-        {
-            
-            // Configure HTTP basic authorization: bearerAuth
-            Configuration.Default.Username = "YOUR_USERNAME";
-            Configuration.Default.Password = "YOUR_PASSWORD";
-
-            var apiInstance = new LayoutApi();
-            var supplyChainId = supplyChainId_example;  // String | supply chain id (default to null)
-            var approvalConfigurationId = approvalConfigurationId_example;  // String | approval configuration id (default to null)
-
-            try
-            {
-                // updates an approval configuration for a segment step
-                ApprovalConfiguration result = apiInstance.getApprovalConfiguration(supplyChainId, approvalConfigurationId);
-                Debug.WriteLine(result);
-            }
-            catch (Exception e)
-            {
-                Debug.Print("Exception when calling LayoutApi.getApprovalConfiguration: " + e.Message );
-            }
-        }
-    }
-}
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Layout-getApprovalConfiguration-0-php">
-                              <pre class="prettyprint"><code class="language-php"><&#63;php
-require_once(__DIR__ . '/vendor/autoload.php');
-
-// Configure HTTP basic authorization: bearerAuth
-OpenAPITools\Client\Configuration::getDefaultConfiguration()->setUsername('YOUR_USERNAME');
-OpenAPITools\Client\Configuration::getDefaultConfiguration()->setPassword('YOUR_PASSWORD');
-
-$api_instance = new OpenAPITools\Client\Api\LayoutApi();
-$supplyChainId = supplyChainId_example; // String | supply chain id
-$approvalConfigurationId = approvalConfigurationId_example; // String | approval configuration id
-
-try {
-    $result = $api_instance->getApprovalConfiguration($supplyChainId, $approvalConfigurationId);
-    print_r($result);
-} catch (Exception $e) {
-    echo 'Exception when calling LayoutApi->getApprovalConfiguration: ', $e->getMessage(), PHP_EOL;
-}
-?></code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Layout-getApprovalConfiguration-0-perl">
-                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
-use WWW::OPenAPIClient::Configuration;
-use WWW::OPenAPIClient::LayoutApi;
-
-# Configure HTTP basic authorization: bearerAuth
-$WWW::OPenAPIClient::Configuration::username = 'YOUR_USERNAME';
-$WWW::OPenAPIClient::Configuration::password = 'YOUR_PASSWORD';
-
-my $api_instance = WWW::OPenAPIClient::LayoutApi->new();
-my $supplyChainId = supplyChainId_example; # String | supply chain id
-my $approvalConfigurationId = approvalConfigurationId_example; # String | approval configuration id
-
-eval { 
-    my $result = $api_instance->getApprovalConfiguration(supplyChainId => $supplyChainId, approvalConfigurationId => $approvalConfigurationId);
-    print Dumper($result);
-};
-if ($@) {
-    warn "Exception when calling LayoutApi->getApprovalConfiguration: $@\n";
-}</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Layout-getApprovalConfiguration-0-python">
-                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
-import time
-import openapi_client
-from openapi_client.rest import ApiException
-from pprint import pprint
-
-# Configure HTTP basic authorization: bearerAuth
-openapi_client.configuration.username = 'YOUR_USERNAME'
-openapi_client.configuration.password = 'YOUR_PASSWORD'
-
-# create an instance of the API class
-api_instance = openapi_client.LayoutApi()
-supplyChainId = supplyChainId_example # String | supply chain id (default to null)
-approvalConfigurationId = approvalConfigurationId_example # String | approval configuration id (default to null)
-
-try: 
-    # updates an approval configuration for a segment step
-    api_response = api_instance.get_approval_configuration(supplyChainId, approvalConfigurationId)
-    pprint(api_response)
-except ApiException as e:
-    print("Exception when calling LayoutApi->getApprovalConfiguration: %s\n" % e)</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Layout-getApprovalConfiguration-0-rust">
-                              <pre class="prettyprint"><code class="language-rust">extern crate LayoutApi;
-
-pub fn main() {
-    let supplyChainId = supplyChainId_example; // String
-    let approvalConfigurationId = approvalConfigurationId_example; // String
-
-    let mut context = LayoutApi::Context::default();
-    let result = client.getApprovalConfiguration(supplyChainId, approvalConfigurationId, &context).wait();
-    println!("{:?}", result);
-
-}
-</code></pre>
-                            </div>
-                          </div>
-
-                          <h2>Scopes</h2>
-                          <table>
-                            
-                          </table>
-
-                          <h2>Parameters</h2>
-
-                            <div class="methodsubtabletitle">Path parameters</div>
-                            <table id="methodsubtable">
-                                <tr>
-                                  <th width="150px">Name</th>
-                                  <th>Description</th>
-                                </tr>
-                                  <tr><td style="width:150px;">supplyChainId*</td>
-<td>
-
-
-    <div id="d2e199_getApprovalConfiguration_supplyChainId">
-        <div class="json-schema-view">
-            <div class="primitive">
-                <span class="type">
-                    String
-                </span>
-
-                    <div class="inner description marked">
-supply chain id
-                    </div>
-            </div>
-                <div class="inner required">
-                    Required
-                </div>
-        </div>
-    </div>
-</td>
-</tr>
-
-                                  <tr><td style="width:150px;">approvalConfigurationId*</td>
-<td>
-
-
-    <div id="d2e199_getApprovalConfiguration_approvalConfigurationId">
-        <div class="json-schema-view">
-            <div class="primitive">
-                <span class="type">
-                    String
-                </span>
-
-                    <div class="inner description marked">
-approval configuration id
-                    </div>
-            </div>
-                <div class="inner required">
-                    Required
-                </div>
-        </div>
-    </div>
-</td>
-</tr>
-
-                            </table>
-
-
-
-
-
-                          <h2>Responses</h2>
-                            <h3 id="examples-Layout-getApprovalConfiguration-title-200"></h3>
-                            <p id="examples-Layout-getApprovalConfiguration-description-200" class="marked"></p>
-                            <script>
-                              var responseLayout200_description = `ok`;
-                              var responseLayout200_description_break = responseLayout200_description.indexOf('\n');
-                              if (responseLayout200_description_break == -1) {
-                                $("#examples-Layout-getApprovalConfiguration-title-200").text("Status: 200 - " + responseLayout200_description);
-                              } else {
-                                $("#examples-Layout-getApprovalConfiguration-title-200").text("Status: 200 - " + responseLayout200_description.substring(0, responseLayout200_description_break));
-                                $("#examples-Layout-getApprovalConfiguration-description-200").html(responseLayout200_description.substring(responseLayout200_description_break));
-                              }
-                            </script>
-
-
-                            <ul id="responses-detail-Layout-getApprovalConfiguration-200" class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-Layout-getApprovalConfiguration-200-schema">Schema</a>
-                                </li>
-
-
-
-
-                            </ul>
-
-
-                            <div class="tab-content" id="responses-Layout-getApprovalConfiguration-200-wrapper" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-Layout-getApprovalConfiguration-200-schema">
-                                  <div id="responses-Layout-getApprovalConfiguration-schema-200" class="exampleStyle">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = {
-  "description" : "ok",
-  "content" : {
-    "application/json" : {
-      "schema" : {
-        "$ref" : "#/components/schemas/ApprovalConfiguration"
-      }
-    }
-  }
-};
-                                        var schema = findNode('schema',schemaWrapper).schema;
-                                        if (!schema) {
-                                            schema = schemaWrapper.schema;
-                                        }
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                        } else if (schema.items != null && schema.items.$ref != null) {
-                                            schema.items = defsParser.$refs.get(schema.items.$ref);
-                                        } else {
-                                          schemaWrapper.definitions = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-Layout-getApprovalConfiguration-200-schema-data').val(JSON.stringify(schema));
-                                        var result = $('#responses-Layout-getApprovalConfiguration-schema-200');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-Layout-getApprovalConfiguration-200-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-                            <h3 id="examples-Layout-getApprovalConfiguration-title-500"></h3>
-                            <p id="examples-Layout-getApprovalConfiguration-description-500" class="marked"></p>
-                            <script>
-                              var responseLayout500_description = `server error`;
-                              var responseLayout500_description_break = responseLayout500_description.indexOf('\n');
-                              if (responseLayout500_description_break == -1) {
-                                $("#examples-Layout-getApprovalConfiguration-title-500").text("Status: 500 - " + responseLayout500_description);
-                              } else {
-                                $("#examples-Layout-getApprovalConfiguration-title-500").text("Status: 500 - " + responseLayout500_description.substring(0, responseLayout500_description_break));
-                                $("#examples-Layout-getApprovalConfiguration-description-500").html(responseLayout500_description.substring(responseLayout500_description_break));
-                              }
-                            </script>
-
-
-                            <ul id="responses-detail-Layout-getApprovalConfiguration-500" class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-Layout-getApprovalConfiguration-500-schema">Schema</a>
-                                </li>
-
-
-
-
-                            </ul>
-
-
-                            <div class="tab-content" id="responses-Layout-getApprovalConfiguration-500-wrapper" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-Layout-getApprovalConfiguration-500-schema">
-                                  <div id="responses-Layout-getApprovalConfiguration-schema-500" class="exampleStyle">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = {
-  "description" : "server error",
-  "content" : {
-    "application/json" : {
-      "schema" : {
-        "$ref" : "#/components/schemas/Error"
-      }
-    }
-  }
-};
-                                        var schema = findNode('schema',schemaWrapper).schema;
-                                        if (!schema) {
-                                            schema = schemaWrapper.schema;
-                                        }
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                        } else if (schema.items != null && schema.items.$ref != null) {
-                                            schema.items = defsParser.$refs.get(schema.items.$ref);
-                                        } else {
-                                          schemaWrapper.definitions = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-Layout-getApprovalConfiguration-500-schema-data').val(JSON.stringify(schema));
-                                        var result = $('#responses-Layout-getApprovalConfiguration-schema-500');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-Layout-getApprovalConfiguration-500-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-                        </article>
-                      </div>
-                      <hr>
                     <div id="api-Layout-getApprovalConfigurations">
                       <article id="api-Layout-getApprovalConfigurations-0" data-group="User" data-name="getApprovalConfigurations" data-version="0">
                         <div class="pull-left">
@@ -6962,6 +6075,445 @@ supply chain id
                                     </script>
                                   </div>
                                   <input id='responses-Layout-getApprovalConfigurations-500-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+                        </article>
+                      </div>
+                      <hr>
+                    <div id="api-Layout-getApprovalsForAccount">
+                      <article id="api-Layout-getApprovalsForAccount-0" data-group="User" data-name="getApprovalsForAccount" data-version="0">
+                        <div class="pull-left">
+                          <h1>getApprovalsForAccount</h1>
+                          <p>returns a list of approvals for the login user</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked"></p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/supplychain/{supplyChainId}/layout/approvalconfig/me</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Layout-getApprovalsForAccount-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Layout-getApprovalsForAccount-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Layout-getApprovalsForAccount-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Layout-getApprovalsForAccount-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Layout-getApprovalsForAccount-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Layout-getApprovalsForAccount-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Layout-getApprovalsForAccount-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Layout-getApprovalsForAccount-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Layout-getApprovalsForAccount-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Layout-getApprovalsForAccount-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Layout-getApprovalsForAccount-0-python">Python</a></li>
+                          <li class=""><a href="#examples-Layout-getApprovalsForAccount-0-rust">Rust</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Layout-getApprovalsForAccount-0-curl">
+                            <pre class="prettyprint"><code class="language-bsh">curl -X GET -H "Accept: application/json" -H "Authorization: Basic [[basicHash]]" "https://raw.githubusercontent.com/api/supplychain/{supplyChainId}/layout/approvalconfig/me"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Layout-getApprovalsForAccount-0-java">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.*;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.model.*;
+import org.openapitools.client.api.LayoutApi;
+
+import java.io.File;
+import java.util.*;
+
+public class LayoutApiExample {
+
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        
+        // Configure HTTP basic authorization: bearerAuth
+        HttpBasicAuth bearerAuth = (HttpBasicAuth) defaultClient.getAuthentication("bearerAuth");
+        bearerAuth.setUsername("YOUR USERNAME");
+        bearerAuth.setPassword("YOUR PASSWORD");
+        // Configure HTTP bearer authorization: bearerAuth
+        HttpBearerAuth bearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("bearerAuth");
+        bearerAuth.setBearerToken("BEARER TOKEN");
+
+        LayoutApi apiInstance = new LayoutApi();
+        String supplyChainId = supplyChainId_example; // String | supply chain id
+        try {
+            array[ApprovalConfiguration] result = apiInstance.getApprovalsForAccount(supplyChainId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling LayoutApi#getApprovalsForAccount");
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Layout-getApprovalsForAccount-0-android">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.api.LayoutApi;
+
+public class LayoutApiExample {
+
+    public static void main(String[] args) {
+        LayoutApi apiInstance = new LayoutApi();
+        String supplyChainId = supplyChainId_example; // String | supply chain id
+        try {
+            array[ApprovalConfiguration] result = apiInstance.getApprovalsForAccount(supplyChainId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling LayoutApi#getApprovalsForAccount");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Layout-getApprovalsForAccount-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Layout-getApprovalsForAccount-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+// Configure HTTP basic authorization (authentication scheme: bearerAuth)
+[apiConfig setUsername:@"YOUR_USERNAME"];
+[apiConfig setPassword:@"YOUR_PASSWORD"];
+
+String *supplyChainId = supplyChainId_example; // supply chain id (default to null)
+
+LayoutApi *apiInstance = [[LayoutApi alloc] init];
+
+// returns a list of approvals for the login user
+[apiInstance getApprovalsForAccountWith:supplyChainId
+              completionHandler: ^(array[ApprovalConfiguration] output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Layout-getApprovalsForAccount-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var ArgosService = require('argos_service');
+var defaultClient = ArgosService.ApiClient.instance;
+
+// Configure HTTP basic authorization: bearerAuth
+var bearerAuth = defaultClient.authentications['bearerAuth'];
+bearerAuth.username = 'YOUR USERNAME'
+bearerAuth.password = 'YOUR PASSWORD'
+
+var api = new ArgosService.LayoutApi()
+var supplyChainId = supplyChainId_example; // {String} supply chain id
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.getApprovalsForAccount(supplyChainId, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Layout-getApprovalsForAccount-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Layout-getApprovalsForAccount-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using Org.OpenAPITools.Api;
+using Org.OpenAPITools.Client;
+using Org.OpenAPITools.Model;
+
+namespace Example
+{
+    public class getApprovalsForAccountExample
+    {
+        public void main()
+        {
+            
+            // Configure HTTP basic authorization: bearerAuth
+            Configuration.Default.Username = "YOUR_USERNAME";
+            Configuration.Default.Password = "YOUR_PASSWORD";
+
+            var apiInstance = new LayoutApi();
+            var supplyChainId = supplyChainId_example;  // String | supply chain id (default to null)
+
+            try
+            {
+                // returns a list of approvals for the login user
+                array[ApprovalConfiguration] result = apiInstance.getApprovalsForAccount(supplyChainId);
+                Debug.WriteLine(result);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling LayoutApi.getApprovalsForAccount: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Layout-getApprovalsForAccount-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+// Configure HTTP basic authorization: bearerAuth
+OpenAPITools\Client\Configuration::getDefaultConfiguration()->setUsername('YOUR_USERNAME');
+OpenAPITools\Client\Configuration::getDefaultConfiguration()->setPassword('YOUR_PASSWORD');
+
+$api_instance = new OpenAPITools\Client\Api\LayoutApi();
+$supplyChainId = supplyChainId_example; // String | supply chain id
+
+try {
+    $result = $api_instance->getApprovalsForAccount($supplyChainId);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling LayoutApi->getApprovalsForAccount: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Layout-getApprovalsForAccount-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::OPenAPIClient::Configuration;
+use WWW::OPenAPIClient::LayoutApi;
+
+# Configure HTTP basic authorization: bearerAuth
+$WWW::OPenAPIClient::Configuration::username = 'YOUR_USERNAME';
+$WWW::OPenAPIClient::Configuration::password = 'YOUR_PASSWORD';
+
+my $api_instance = WWW::OPenAPIClient::LayoutApi->new();
+my $supplyChainId = supplyChainId_example; # String | supply chain id
+
+eval { 
+    my $result = $api_instance->getApprovalsForAccount(supplyChainId => $supplyChainId);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling LayoutApi->getApprovalsForAccount: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Layout-getApprovalsForAccount-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import openapi_client
+from openapi_client.rest import ApiException
+from pprint import pprint
+
+# Configure HTTP basic authorization: bearerAuth
+openapi_client.configuration.username = 'YOUR_USERNAME'
+openapi_client.configuration.password = 'YOUR_PASSWORD'
+
+# create an instance of the API class
+api_instance = openapi_client.LayoutApi()
+supplyChainId = supplyChainId_example # String | supply chain id (default to null)
+
+try: 
+    # returns a list of approvals for the login user
+    api_response = api_instance.get_approvals_for_account(supplyChainId)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling LayoutApi->getApprovalsForAccount: %s\n" % e)</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Layout-getApprovalsForAccount-0-rust">
+                              <pre class="prettyprint"><code class="language-rust">extern crate LayoutApi;
+
+pub fn main() {
+    let supplyChainId = supplyChainId_example; // String
+
+    let mut context = LayoutApi::Context::default();
+    let result = client.getApprovalsForAccount(supplyChainId, &context).wait();
+    println!("{:?}", result);
+
+}
+</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Scopes</h2>
+                          <table>
+                            
+                          </table>
+
+                          <h2>Parameters</h2>
+
+                            <div class="methodsubtabletitle">Path parameters</div>
+                            <table id="methodsubtable">
+                                <tr>
+                                  <th width="150px">Name</th>
+                                  <th>Description</th>
+                                </tr>
+                                  <tr><td style="width:150px;">supplyChainId*</td>
+<td>
+
+
+    <div id="d2e199_getApprovalsForAccount_supplyChainId">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    String
+                </span>
+
+                    <div class="inner description marked">
+supply chain id
+                    </div>
+            </div>
+                <div class="inner required">
+                    Required
+                </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                            </table>
+
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3 id="examples-Layout-getApprovalsForAccount-title-200"></h3>
+                            <p id="examples-Layout-getApprovalsForAccount-description-200" class="marked"></p>
+                            <script>
+                              var responseLayout200_description = `array of approvals`;
+                              var responseLayout200_description_break = responseLayout200_description.indexOf('\n');
+                              if (responseLayout200_description_break == -1) {
+                                $("#examples-Layout-getApprovalsForAccount-title-200").text("Status: 200 - " + responseLayout200_description);
+                              } else {
+                                $("#examples-Layout-getApprovalsForAccount-title-200").text("Status: 200 - " + responseLayout200_description.substring(0, responseLayout200_description_break));
+                                $("#examples-Layout-getApprovalsForAccount-description-200").html(responseLayout200_description.substring(responseLayout200_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-Layout-getApprovalsForAccount-200" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-Layout-getApprovalsForAccount-200-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-Layout-getApprovalsForAccount-200-wrapper" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-Layout-getApprovalsForAccount-200-schema">
+                                  <div id="responses-Layout-getApprovalsForAccount-schema-200" class="exampleStyle">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "array of approvals",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/ApprovalConfiguration"
+        }
+      }
+    }
+  }
+};
+                                        var schema = findNode('schema',schemaWrapper).schema;
+                                        if (!schema) {
+                                            schema = schemaWrapper.schema;
+                                        }
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else if (schema.items != null && schema.items.$ref != null) {
+                                            schema.items = defsParser.$refs.get(schema.items.$ref);
+                                        } else {
+                                          schemaWrapper.definitions = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-Layout-getApprovalsForAccount-200-schema-data').val(JSON.stringify(schema));
+                                        var result = $('#responses-Layout-getApprovalsForAccount-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-Layout-getApprovalsForAccount-200-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+                            <h3 id="examples-Layout-getApprovalsForAccount-title-500"></h3>
+                            <p id="examples-Layout-getApprovalsForAccount-description-500" class="marked"></p>
+                            <script>
+                              var responseLayout500_description = `server error`;
+                              var responseLayout500_description_break = responseLayout500_description.indexOf('\n');
+                              if (responseLayout500_description_break == -1) {
+                                $("#examples-Layout-getApprovalsForAccount-title-500").text("Status: 500 - " + responseLayout500_description);
+                              } else {
+                                $("#examples-Layout-getApprovalsForAccount-title-500").text("Status: 500 - " + responseLayout500_description.substring(0, responseLayout500_description_break));
+                                $("#examples-Layout-getApprovalsForAccount-description-500").html(responseLayout500_description.substring(responseLayout500_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-Layout-getApprovalsForAccount-500" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-Layout-getApprovalsForAccount-500-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-Layout-getApprovalsForAccount-500-wrapper" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-Layout-getApprovalsForAccount-500-schema">
+                                  <div id="responses-Layout-getApprovalsForAccount-schema-500" class="exampleStyle">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "server error",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/Error"
+      }
+    }
+  }
+};
+                                        var schema = findNode('schema',schemaWrapper).schema;
+                                        if (!schema) {
+                                            schema = schemaWrapper.schema;
+                                        }
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else if (schema.items != null && schema.items.$ref != null) {
+                                            schema.items = defsParser.$refs.get(schema.items.$ref);
+                                        } else {
+                                          schemaWrapper.definitions = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-Layout-getApprovalsForAccount-500-schema-data').val(JSON.stringify(schema));
+                                        var result = $('#responses-Layout-getApprovalsForAccount-schema-500');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-Layout-getApprovalsForAccount-500-schema-data' type='hidden' value=''></input>
                                 </div>
                             </div>
                         </article>
@@ -7421,596 +6973,6 @@ supply chain id
 
 
                             <div class="tab-content" id="responses-Layout-getLayout-404-wrapper" style='margin-bottom: 10px;'>
-                            </div>
-                        </article>
-                      </div>
-                      <hr>
-                    <div id="api-Layout-updateApprovalConfiguration">
-                      <article id="api-Layout-updateApprovalConfiguration-0" data-group="User" data-name="updateApprovalConfiguration" data-version="0">
-                        <div class="pull-left">
-                          <h1>updateApprovalConfiguration</h1>
-                          <p>updates an approval configuration for a segment step</p>
-                        </div>
-                        <div class="pull-right"></div>
-                        <div class="clearfix"></div>
-                        <p></p>
-                        <p class="marked"></p>
-                        <p></p>
-                        <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="put"><code><span class="pln">/supplychain/{supplyChainId}/layout/approvalconfig/{approvalConfigurationId}</span></code></pre>
-                        <p>
-                          <h3>Usage and SDK Samples</h3>
-                        </p>
-                        <ul class="nav nav-tabs nav-tabs-examples">
-                          <li class="active"><a href="#examples-Layout-updateApprovalConfiguration-0-curl">Curl</a></li>
-                          <li class=""><a href="#examples-Layout-updateApprovalConfiguration-0-java">Java</a></li>
-                          <li class=""><a href="#examples-Layout-updateApprovalConfiguration-0-android">Android</a></li>
-                          <!--<li class=""><a href="#examples-Layout-updateApprovalConfiguration-0-groovy">Groovy</a></li>-->
-                          <li class=""><a href="#examples-Layout-updateApprovalConfiguration-0-objc">Obj-C</a></li>
-                          <li class=""><a href="#examples-Layout-updateApprovalConfiguration-0-javascript">JavaScript</a></li>
-                          <!--<li class=""><a href="#examples-Layout-updateApprovalConfiguration-0-angular">Angular</a></li>-->
-                          <li class=""><a href="#examples-Layout-updateApprovalConfiguration-0-csharp">C#</a></li>
-                          <li class=""><a href="#examples-Layout-updateApprovalConfiguration-0-php">PHP</a></li>
-                          <li class=""><a href="#examples-Layout-updateApprovalConfiguration-0-perl">Perl</a></li>
-                          <li class=""><a href="#examples-Layout-updateApprovalConfiguration-0-python">Python</a></li>
-                          <li class=""><a href="#examples-Layout-updateApprovalConfiguration-0-rust">Rust</a></li>
-                        </ul>
-
-                        <div class="tab-content">
-                          <div class="tab-pane active" id="examples-Layout-updateApprovalConfiguration-0-curl">
-                            <pre class="prettyprint"><code class="language-bsh">curl -X PUT -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Basic [[basicHash]]" "https://raw.githubusercontent.com/api/supplychain/{supplyChainId}/layout/approvalconfig/{approvalConfigurationId}"</code></pre>
-                          </div>
-                          <div class="tab-pane" id="examples-Layout-updateApprovalConfiguration-0-java">
-                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.*;
-import org.openapitools.client.auth.*;
-import org.openapitools.client.model.*;
-import org.openapitools.client.api.LayoutApi;
-
-import java.io.File;
-import java.util.*;
-
-public class LayoutApiExample {
-
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        
-        // Configure HTTP basic authorization: bearerAuth
-        HttpBasicAuth bearerAuth = (HttpBasicAuth) defaultClient.getAuthentication("bearerAuth");
-        bearerAuth.setUsername("YOUR USERNAME");
-        bearerAuth.setPassword("YOUR PASSWORD");
-        // Configure HTTP bearer authorization: bearerAuth
-        HttpBearerAuth bearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("bearerAuth");
-        bearerAuth.setBearerToken("BEARER TOKEN");
-
-        LayoutApi apiInstance = new LayoutApi();
-        String supplyChainId = supplyChainId_example; // String | supply chain id
-        String approvalConfigurationId = approvalConfigurationId_example; // String | approval configuration id
-        ApprovalConfiguration approvalConfiguration = ; // ApprovalConfiguration | 
-        try {
-            ApprovalConfiguration result = apiInstance.updateApprovalConfiguration(supplyChainId, approvalConfigurationId, approvalConfiguration);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling LayoutApi#updateApprovalConfiguration");
-            e.printStackTrace();
-        }
-    }
-}
-</code></pre>
-                          </div>
-
-                          <div class="tab-pane" id="examples-Layout-updateApprovalConfiguration-0-android">
-                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.api.LayoutApi;
-
-public class LayoutApiExample {
-
-    public static void main(String[] args) {
-        LayoutApi apiInstance = new LayoutApi();
-        String supplyChainId = supplyChainId_example; // String | supply chain id
-        String approvalConfigurationId = approvalConfigurationId_example; // String | approval configuration id
-        ApprovalConfiguration approvalConfiguration = ; // ApprovalConfiguration | 
-        try {
-            ApprovalConfiguration result = apiInstance.updateApprovalConfiguration(supplyChainId, approvalConfigurationId, approvalConfiguration);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling LayoutApi#updateApprovalConfiguration");
-            e.printStackTrace();
-        }
-    }
-}</code></pre>
-                          </div>
-  <!--
-  <div class="tab-pane" id="examples-Layout-updateApprovalConfiguration-0-groovy">
-  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-  </div> -->
-                            <div class="tab-pane" id="examples-Layout-updateApprovalConfiguration-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
-// Configure HTTP basic authorization (authentication scheme: bearerAuth)
-[apiConfig setUsername:@"YOUR_USERNAME"];
-[apiConfig setPassword:@"YOUR_PASSWORD"];
-
-String *supplyChainId = supplyChainId_example; // supply chain id (default to null)
-String *approvalConfigurationId = approvalConfigurationId_example; // approval configuration id (default to null)
-ApprovalConfiguration *approvalConfiguration = ; // 
-
-LayoutApi *apiInstance = [[LayoutApi alloc] init];
-
-// updates an approval configuration for a segment step
-[apiInstance updateApprovalConfigurationWith:supplyChainId
-    approvalConfigurationId:approvalConfigurationId
-    approvalConfiguration:approvalConfiguration
-              completionHandler: ^(ApprovalConfiguration output, NSError* error) {
-                            if (output) {
-                                NSLog(@"%@", output);
-                            }
-                            if (error) {
-                                NSLog(@"Error: %@", error);
-                            }
-                        }];
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Layout-updateApprovalConfiguration-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var ArgosService = require('argos_service');
-var defaultClient = ArgosService.ApiClient.instance;
-
-// Configure HTTP basic authorization: bearerAuth
-var bearerAuth = defaultClient.authentications['bearerAuth'];
-bearerAuth.username = 'YOUR USERNAME'
-bearerAuth.password = 'YOUR PASSWORD'
-
-var api = new ArgosService.LayoutApi()
-var supplyChainId = supplyChainId_example; // {String} supply chain id
-var approvalConfigurationId = approvalConfigurationId_example; // {String} approval configuration id
-var approvalConfiguration = ; // {ApprovalConfiguration} 
-
-var callback = function(error, data, response) {
-  if (error) {
-    console.error(error);
-  } else {
-    console.log('API called successfully. Returned data: ' + data);
-  }
-};
-api.updateApprovalConfiguration(supplyChainId, approvalConfigurationId, approvalConfiguration, callback);
-</code></pre>
-                            </div>
-
-                            <!--<div class="tab-pane" id="examples-Layout-updateApprovalConfiguration-0-angular">
-              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-            </div>-->
-                            <div class="tab-pane" id="examples-Layout-updateApprovalConfiguration-0-csharp">
-                              <pre class="prettyprint"><code class="language-cs">using System;
-using System.Diagnostics;
-using Org.OpenAPITools.Api;
-using Org.OpenAPITools.Client;
-using Org.OpenAPITools.Model;
-
-namespace Example
-{
-    public class updateApprovalConfigurationExample
-    {
-        public void main()
-        {
-            
-            // Configure HTTP basic authorization: bearerAuth
-            Configuration.Default.Username = "YOUR_USERNAME";
-            Configuration.Default.Password = "YOUR_PASSWORD";
-
-            var apiInstance = new LayoutApi();
-            var supplyChainId = supplyChainId_example;  // String | supply chain id (default to null)
-            var approvalConfigurationId = approvalConfigurationId_example;  // String | approval configuration id (default to null)
-            var approvalConfiguration = new ApprovalConfiguration(); // ApprovalConfiguration | 
-
-            try
-            {
-                // updates an approval configuration for a segment step
-                ApprovalConfiguration result = apiInstance.updateApprovalConfiguration(supplyChainId, approvalConfigurationId, approvalConfiguration);
-                Debug.WriteLine(result);
-            }
-            catch (Exception e)
-            {
-                Debug.Print("Exception when calling LayoutApi.updateApprovalConfiguration: " + e.Message );
-            }
-        }
-    }
-}
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Layout-updateApprovalConfiguration-0-php">
-                              <pre class="prettyprint"><code class="language-php"><&#63;php
-require_once(__DIR__ . '/vendor/autoload.php');
-
-// Configure HTTP basic authorization: bearerAuth
-OpenAPITools\Client\Configuration::getDefaultConfiguration()->setUsername('YOUR_USERNAME');
-OpenAPITools\Client\Configuration::getDefaultConfiguration()->setPassword('YOUR_PASSWORD');
-
-$api_instance = new OpenAPITools\Client\Api\LayoutApi();
-$supplyChainId = supplyChainId_example; // String | supply chain id
-$approvalConfigurationId = approvalConfigurationId_example; // String | approval configuration id
-$approvalConfiguration = ; // ApprovalConfiguration | 
-
-try {
-    $result = $api_instance->updateApprovalConfiguration($supplyChainId, $approvalConfigurationId, $approvalConfiguration);
-    print_r($result);
-} catch (Exception $e) {
-    echo 'Exception when calling LayoutApi->updateApprovalConfiguration: ', $e->getMessage(), PHP_EOL;
-}
-?></code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Layout-updateApprovalConfiguration-0-perl">
-                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
-use WWW::OPenAPIClient::Configuration;
-use WWW::OPenAPIClient::LayoutApi;
-
-# Configure HTTP basic authorization: bearerAuth
-$WWW::OPenAPIClient::Configuration::username = 'YOUR_USERNAME';
-$WWW::OPenAPIClient::Configuration::password = 'YOUR_PASSWORD';
-
-my $api_instance = WWW::OPenAPIClient::LayoutApi->new();
-my $supplyChainId = supplyChainId_example; # String | supply chain id
-my $approvalConfigurationId = approvalConfigurationId_example; # String | approval configuration id
-my $approvalConfiguration = WWW::OPenAPIClient::Object::ApprovalConfiguration->new(); # ApprovalConfiguration | 
-
-eval { 
-    my $result = $api_instance->updateApprovalConfiguration(supplyChainId => $supplyChainId, approvalConfigurationId => $approvalConfigurationId, approvalConfiguration => $approvalConfiguration);
-    print Dumper($result);
-};
-if ($@) {
-    warn "Exception when calling LayoutApi->updateApprovalConfiguration: $@\n";
-}</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Layout-updateApprovalConfiguration-0-python">
-                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
-import time
-import openapi_client
-from openapi_client.rest import ApiException
-from pprint import pprint
-
-# Configure HTTP basic authorization: bearerAuth
-openapi_client.configuration.username = 'YOUR_USERNAME'
-openapi_client.configuration.password = 'YOUR_PASSWORD'
-
-# create an instance of the API class
-api_instance = openapi_client.LayoutApi()
-supplyChainId = supplyChainId_example # String | supply chain id (default to null)
-approvalConfigurationId = approvalConfigurationId_example # String | approval configuration id (default to null)
-approvalConfiguration =  # ApprovalConfiguration | 
-
-try: 
-    # updates an approval configuration for a segment step
-    api_response = api_instance.update_approval_configuration(supplyChainId, approvalConfigurationId, approvalConfiguration)
-    pprint(api_response)
-except ApiException as e:
-    print("Exception when calling LayoutApi->updateApprovalConfiguration: %s\n" % e)</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Layout-updateApprovalConfiguration-0-rust">
-                              <pre class="prettyprint"><code class="language-rust">extern crate LayoutApi;
-
-pub fn main() {
-    let supplyChainId = supplyChainId_example; // String
-    let approvalConfigurationId = approvalConfigurationId_example; // String
-    let approvalConfiguration = ; // ApprovalConfiguration
-
-    let mut context = LayoutApi::Context::default();
-    let result = client.updateApprovalConfiguration(supplyChainId, approvalConfigurationId, approvalConfiguration, &context).wait();
-    println!("{:?}", result);
-
-}
-</code></pre>
-                            </div>
-                          </div>
-
-                          <h2>Scopes</h2>
-                          <table>
-                            
-                          </table>
-
-                          <h2>Parameters</h2>
-
-                            <div class="methodsubtabletitle">Path parameters</div>
-                            <table id="methodsubtable">
-                                <tr>
-                                  <th width="150px">Name</th>
-                                  <th>Description</th>
-                                </tr>
-                                  <tr><td style="width:150px;">supplyChainId*</td>
-<td>
-
-
-    <div id="d2e199_updateApprovalConfiguration_supplyChainId">
-        <div class="json-schema-view">
-            <div class="primitive">
-                <span class="type">
-                    String
-                </span>
-
-                    <div class="inner description marked">
-supply chain id
-                    </div>
-            </div>
-                <div class="inner required">
-                    Required
-                </div>
-        </div>
-    </div>
-</td>
-</tr>
-
-                                  <tr><td style="width:150px;">approvalConfigurationId*</td>
-<td>
-
-
-    <div id="d2e199_updateApprovalConfiguration_approvalConfigurationId">
-        <div class="json-schema-view">
-            <div class="primitive">
-                <span class="type">
-                    String
-                </span>
-
-                    <div class="inner description marked">
-approval configuration id
-                    </div>
-            </div>
-                <div class="inner required">
-                    Required
-                </div>
-        </div>
-    </div>
-</td>
-</tr>
-
-                            </table>
-
-
-                            <div class="methodsubtabletitle">Body parameters</div>
-                            <table id="methodsubtable">
-                              <tr>
-                                <th width="150px">Name</th>
-                                <th>Description</th>
-                              </tr>
-                                <tr><td style="width:150px;">approvalConfiguration <span style="color:red;">*</span></td>
-<td>
-<p class="marked"></p>
-<script>
-$(document).ready(function() {
-  var schemaWrapper = {
-  "content" : {
-    "application/json" : {
-      "schema" : {
-        "$ref" : "#/components/schemas/ApprovalConfiguration"
-      }
-    }
-  },
-  "required" : true
-};
-  var schema = findNode('schema', schemaWrapper).schema;
-  if (!schema) {
-      schema = schemaWrapper.schema;
-  }
-  if (schema.$ref != null) {
-    schema = defsParser.$refs.get(schema.$ref);
-  } else {
-    schemaWrapper.definitions = Object.assign({}, defs);
-    $RefParser.dereference(schemaWrapper).catch(function(err) {
-      console.log(err);
-    });
-  }
-
-  var view = new JSONSchemaView(schema,2,{isBodyParam: true});
-  var result = $('#d2e199_updateApprovalConfiguration_approvalConfiguration');
-  result.empty();
-  result.append(view.render());
-});
-</script>
-<div id="d2e199_updateApprovalConfiguration_approvalConfiguration"></div>
-</td>
-</tr>
-
-                            </table>
-
-
-
-                          <h2>Responses</h2>
-                            <h3 id="examples-Layout-updateApprovalConfiguration-title-200"></h3>
-                            <p id="examples-Layout-updateApprovalConfiguration-description-200" class="marked"></p>
-                            <script>
-                              var responseLayout200_description = `updated successfully`;
-                              var responseLayout200_description_break = responseLayout200_description.indexOf('\n');
-                              if (responseLayout200_description_break == -1) {
-                                $("#examples-Layout-updateApprovalConfiguration-title-200").text("Status: 200 - " + responseLayout200_description);
-                              } else {
-                                $("#examples-Layout-updateApprovalConfiguration-title-200").text("Status: 200 - " + responseLayout200_description.substring(0, responseLayout200_description_break));
-                                $("#examples-Layout-updateApprovalConfiguration-description-200").html(responseLayout200_description.substring(responseLayout200_description_break));
-                              }
-                            </script>
-
-
-                            <ul id="responses-detail-Layout-updateApprovalConfiguration-200" class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-Layout-updateApprovalConfiguration-200-schema">Schema</a>
-                                </li>
-
-
-
-
-                            </ul>
-
-
-                            <div class="tab-content" id="responses-Layout-updateApprovalConfiguration-200-wrapper" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-Layout-updateApprovalConfiguration-200-schema">
-                                  <div id="responses-Layout-updateApprovalConfiguration-schema-200" class="exampleStyle">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = {
-  "description" : "updated successfully",
-  "content" : {
-    "application/json" : {
-      "schema" : {
-        "$ref" : "#/components/schemas/ApprovalConfiguration"
-      }
-    }
-  }
-};
-                                        var schema = findNode('schema',schemaWrapper).schema;
-                                        if (!schema) {
-                                            schema = schemaWrapper.schema;
-                                        }
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                        } else if (schema.items != null && schema.items.$ref != null) {
-                                            schema.items = defsParser.$refs.get(schema.items.$ref);
-                                        } else {
-                                          schemaWrapper.definitions = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-Layout-updateApprovalConfiguration-200-schema-data').val(JSON.stringify(schema));
-                                        var result = $('#responses-Layout-updateApprovalConfiguration-schema-200');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-Layout-updateApprovalConfiguration-200-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-                            <h3 id="examples-Layout-updateApprovalConfiguration-title-400"></h3>
-                            <p id="examples-Layout-updateApprovalConfiguration-description-400" class="marked"></p>
-                            <script>
-                              var responseLayout400_description = `validation error`;
-                              var responseLayout400_description_break = responseLayout400_description.indexOf('\n');
-                              if (responseLayout400_description_break == -1) {
-                                $("#examples-Layout-updateApprovalConfiguration-title-400").text("Status: 400 - " + responseLayout400_description);
-                              } else {
-                                $("#examples-Layout-updateApprovalConfiguration-title-400").text("Status: 400 - " + responseLayout400_description.substring(0, responseLayout400_description_break));
-                                $("#examples-Layout-updateApprovalConfiguration-description-400").html(responseLayout400_description.substring(responseLayout400_description_break));
-                              }
-                            </script>
-
-
-                            <ul id="responses-detail-Layout-updateApprovalConfiguration-400" class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-Layout-updateApprovalConfiguration-400-schema">Schema</a>
-                                </li>
-
-
-
-
-                            </ul>
-
-
-                            <div class="tab-content" id="responses-Layout-updateApprovalConfiguration-400-wrapper" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-Layout-updateApprovalConfiguration-400-schema">
-                                  <div id="responses-Layout-updateApprovalConfiguration-schema-400" class="exampleStyle">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = {
-  "description" : "validation error",
-  "content" : {
-    "application/json" : {
-      "schema" : {
-        "$ref" : "#/components/schemas/ValidationError"
-      }
-    }
-  }
-};
-                                        var schema = findNode('schema',schemaWrapper).schema;
-                                        if (!schema) {
-                                            schema = schemaWrapper.schema;
-                                        }
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                        } else if (schema.items != null && schema.items.$ref != null) {
-                                            schema.items = defsParser.$refs.get(schema.items.$ref);
-                                        } else {
-                                          schemaWrapper.definitions = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-Layout-updateApprovalConfiguration-400-schema-data').val(JSON.stringify(schema));
-                                        var result = $('#responses-Layout-updateApprovalConfiguration-schema-400');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-Layout-updateApprovalConfiguration-400-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-                            <h3 id="examples-Layout-updateApprovalConfiguration-title-500"></h3>
-                            <p id="examples-Layout-updateApprovalConfiguration-description-500" class="marked"></p>
-                            <script>
-                              var responseLayout500_description = `server error`;
-                              var responseLayout500_description_break = responseLayout500_description.indexOf('\n');
-                              if (responseLayout500_description_break == -1) {
-                                $("#examples-Layout-updateApprovalConfiguration-title-500").text("Status: 500 - " + responseLayout500_description);
-                              } else {
-                                $("#examples-Layout-updateApprovalConfiguration-title-500").text("Status: 500 - " + responseLayout500_description.substring(0, responseLayout500_description_break));
-                                $("#examples-Layout-updateApprovalConfiguration-description-500").html(responseLayout500_description.substring(responseLayout500_description_break));
-                              }
-                            </script>
-
-
-                            <ul id="responses-detail-Layout-updateApprovalConfiguration-500" class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-Layout-updateApprovalConfiguration-500-schema">Schema</a>
-                                </li>
-
-
-
-
-                            </ul>
-
-
-                            <div class="tab-content" id="responses-Layout-updateApprovalConfiguration-500-wrapper" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-Layout-updateApprovalConfiguration-500-schema">
-                                  <div id="responses-Layout-updateApprovalConfiguration-schema-500" class="exampleStyle">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = {
-  "description" : "server error",
-  "content" : {
-    "application/json" : {
-      "schema" : {
-        "$ref" : "#/components/schemas/Error"
-      }
-    }
-  }
-};
-                                        var schema = findNode('schema',schemaWrapper).schema;
-                                        if (!schema) {
-                                            schema = schemaWrapper.schema;
-                                        }
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                        } else if (schema.items != null && schema.items.$ref != null) {
-                                            schema.items = defsParser.$refs.get(schema.items.$ref);
-                                        } else {
-                                          schemaWrapper.definitions = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-Layout-updateApprovalConfiguration-500-schema-data').val(JSON.stringify(schema));
-                                        var result = $('#responses-Layout-updateApprovalConfiguration-schema-500');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-Layout-updateApprovalConfiguration-500-schema-data' type='hidden' value=''></input>
-                                </div>
                             </div>
                         </article>
                       </div>
