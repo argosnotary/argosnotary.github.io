@@ -65,7 +65,7 @@ link PubKey to Layout--><path d="M643.7068,554.8771 C627.1361,533.1723 604.5032,
 link Key to Step--><path d="M584.0004,646.9418 C589.4021,651.4337 595.1196,655.59 601,659 C676.8909,703.0093 791,624.7717 791,712.5 C791,712.5 791,712.5 791,1176.5 C791,1250.4349 540.7673,1292.4474 438.1328,1306.5696 " fill="none" id="Key-Step" style="stroke: #2F4F4F; stroke-width: 2.0;"/><text fill="#000000" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="78" x="802" y="928.1387">authorized</text><text fill="#000000" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="24" x="553.713" y="680.6191">1..*</text><text fill="#000000" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="5" x="455.9562" y="1329.3144">-</text><!--MD5=[23e0bbe62cab2ce685671c337870a036]
 link SupplyChain to LayoutMetablock--><path d="M790.4688,231.9362 C776.354,216.8185 759.4572,202.7477 740.5,194.5 C685.6853,170.6518 527.8072,174.428 471.5,194.5 C432.0174,208.5745 395.9806,240.9884 372.7536,265.6255 " fill="none" id="SupplyChain-LayoutMetablock" style="stroke: #2F4F4F; stroke-width: 2.0;"/><!--MD5=[25e70e2bcc8cbfd10a5fb9cc756abc5a]
 link SupplyChain to LinkMetablock--><path d="M790.4688,231.9362 C776.354,216.8185 759.4572,202.7477 740.5,194.5 C690.9834,172.9568 305.0236,175.4378 254.5,194.5 C216.944,208.6696 183.64,241.0678 162.3608,265.6753 " fill="none" id="SupplyChain-LinkMetablock" style="stroke: #2F4F4F; stroke-width: 2.0;"/><!--MD5=[abdd0bce8f1fcdc263ace47b6cac4a87]
-link Rule to Step--><path d="M1029.6581,1263.7717 C1016.8423,1244.0655 999.0534,1223.5636 976.5,1213.5 C879.2533,1170.1073 556.1516,1262.2531 438.4073,1298.3333 " fill="none" id="Rule-Step" style="stroke: #2F4F4F; stroke-width: 2.0;"/><text fill="#000000" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="24" x="989.4309" y="1243.2597">0..*</text><text fill="#000000" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="8" x="456.1214" y="1282.4656">1</text><!--MD5=[b87215bd981f2d996a5d2fd9d2ae4e54]
+link Rule to Step--><path d="M1029.6581,1263.7717 C1016.8423,1244.0655 999.0534,1223.5636 976.5,1213.5 C879.2533,1170.1073 556.1516,1262.2531 438.4073,1298.3333 " fill="none" id="Rule-Step" style="stroke: #2F4F4F; stroke-width: 2.0;"/><text fill="#000000" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="24" x="989.4309" y="1243.2597">0..*</text><text fill="#000000" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="8" x="456.1214" y="1282.4656">1</text><!--MD5=[99cbfdc0779cd58d34230b87c274a97d]
 @startuml
 
 skinparam roundcorner 25
@@ -251,12 +251,10 @@ Rule "0..*" - "1" Step
 
 @enduml
 
-PlantUML version 1.2020.10(Sun May 17 11:35:57 CEST 2020)
+PlantUML version 1.2020.11(Sat May 30 12:13:43 CEST 2020)
 (GPL source distribution)
 Java Runtime: OpenJDK Runtime Environment
 JVM: OpenJDK 64-Bit Server VM
-Java Version: 1.8.0_252-8u252-b09-1~18.04-b09
-Operating System: Linux
 Default Encoding: UTF-8
 Language: en
 Country: US
