@@ -18,7 +18,7 @@
 
 <link rel="preload" href="/styles.57aa043e.js" as="script">
 
-<link rel="preload" href="/runtime~main.b9efd592.js" as="script">
+<link rel="preload" href="/runtime~main.47d56f38.js" as="script">
 
 <link rel="preload" href="/main.c3b47a26.js" as="script">
 
@@ -32,7 +32,7 @@
 
 <link rel="preload" href="/17896441.095e8c50.js" as="script">
 
-<link rel="preload" href="/c44c9c4f.ec5ff671.js" as="script">
+<link rel="preload" href="/c44c9c4f.7e98ec8a.js" as="script">
 
 </head>
 <body>
@@ -51,7 +51,7 @@ This principle is illustrated in the diagram below:
 <img src="/img/hierarchy-permissions.svg" alt="Hierarchy permission example 1"></p><p>An exception to the general rule is made for READ permissions these permissions also cascade down the hierarchy.
 When in the example above a READ permission is set on B but not on A then A is still visible to the user.
 See diagram below for an illustration:
-<img src="/img/hierarchy-permissions-2.svg" alt="Hierarchy permission example 2"></p><h3><a aria-hidden="true" tabindex="-1" class="anchor enhancedAnchor_ZqCz" id="role-based-access"></a><a aria-hidden="true" tabindex="-1" class="hash-link" href="#role-based-access" title="Direct link to heading">#</a>Role based access</h3><p>Role based access is used to resolve permissons in order to allow access to endpoints wich are not connected to the hierarchy described above.
+<img src="/img/hierarchy-permissions-2.svg" alt="Hierarchy permission example 2"></p><h3><a aria-hidden="true" tabindex="-1" class="anchor enhancedAnchor_ZqCz" id="role-based-access"></a><a aria-hidden="true" tabindex="-1" class="hash-link" href="#role-based-access" title="Direct link to heading">#</a>Role based access</h3><p>Role based access is used to resolve permissons in order to allow access to endpoints which are not connected to the hierarchy described above.
 This can be for example to allow users to see their personal account details or to allow administrators to create root labels and grant other users permissions to these labels.</p><h3><a aria-hidden="true" tabindex="-1" class="anchor enhancedAnchor_ZqCz" id="permissions"></a><a aria-hidden="true" tabindex="-1" class="hash-link" href="#permissions" title="Direct link to heading">#</a>Permissions</h3><p>The following permissions are defined:</p><ul><li>READ the user is granted access to read operations.</li><li>TREE_EDIT the user is granted access to crud operations on labels and supply chains.</li><li>LOCAL_PERMISSION_EDIT the user is granted access to operations that change permissions for users on labels.</li><li>ASSIGN_ROLE the user is granted access to assign a role to a user.</li><li>LINK_ADD the user is granted access add a link this is default for service accounts and can be assigned to personal accounts when a manual approval step is required.</li><li>LAYOUT_ADD the user is granted access to sign and store a layout.</li><li>VERIFY the user is granted access to perform a verification run for the supply chain.</li><li>PERSONAL_ACCOUNT_READ the user is granted access to get access to the account details.</li><li>SERVICE_ACCOUNT_EDIT the user is granted access to create a service account.</li></ul><h3><a aria-hidden="true" tabindex="-1" class="anchor enhancedAnchor_ZqCz" id="service-accounts"></a><a aria-hidden="true" tabindex="-1" class="hash-link" href="#service-accounts" title="Direct link to heading">#</a>Service Accounts</h3><p>A Service account is an account which is created for a system to interact with the argos notary service.
 This account is always connected to a particular label in the hierarchy and has a fixed immutable set of permissions,
 LINK_ADD and VERIFY.</p><p>Examples of systems that use a service account are for example a jenkins or xldeploy server.
@@ -62,7 +62,7 @@ At the time of writing there is no functionality implemented to manage roles.</p
 
 <script src="/styles.57aa043e.js"></script>
 
-<script src="/runtime~main.b9efd592.js"></script>
+<script src="/runtime~main.47d56f38.js"></script>
 
 <script src="/main.c3b47a26.js"></script>
 
@@ -76,7 +76,7 @@ At the time of writing there is no functionality implemented to manage roles.</p
 
 <script src="/17896441.095e8c50.js"></script>
 
-<script src="/c44c9c4f.ec5ff671.js"></script>
+<script src="/c44c9c4f.7e98ec8a.js"></script>
 
 
 </body>
