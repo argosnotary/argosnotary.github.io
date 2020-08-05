@@ -50,6 +50,7 @@ class Step {
 enum RuleType {
     ALLOW
     CREATE
+    CREATE_OR_MODIFY
     DELETE
     DISALLOW
     MATCH

@@ -25,19 +25,11 @@ actor account
 participant client as client
 participant "Argos Notary" as argos
 
-account -> client: verify deployment package
-client -> client: collect artifacts
-
-client -> argos: verify artifacts on supplychain
-argos -> argos: get layout
-argos -> argos: verify layout
-argos -> argos: get links with expected endproducts
-argos -> argos: get all links with run id's and match rules
-argos -> argos: verify links
-argos -> argos: permutate in possible link sets
-argos -> argos: verify number of links per step
-argos -> argos: verify rules
+account -> client: verify deployable unit
+client -> client: collect artifact set in deployable unit
+client -> argos: verify artifact set on supplychain
+argos -> argos: create hash of artifact hashes
+argos -> argos: check existence of release dossier with hash
 argos --> client: report result
 client --> account: report result
-
 @enduml
