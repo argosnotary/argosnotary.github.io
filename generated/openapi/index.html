@@ -845,9 +845,10 @@ ul.nav-tabs {
   "type" : "object",
   "properties" : {
     "accountId" : {
-      "type" : "string"
+      "$ref" : "#/components/schemas/UUID"
     },
     "name" : {
+      "maxLength" : 1024,
       "type" : "string"
     },
     "path" : {
@@ -863,9 +864,10 @@ ul.nav-tabs {
   "type" : "object",
   "properties" : {
     "accountId" : {
-      "type" : "string"
+      "$ref" : "#/components/schemas/UUID"
     },
     "name" : {
+      "maxLength" : 1024,
       "type" : "string"
     },
     "path" : {
@@ -892,14 +894,13 @@ ul.nav-tabs {
   "type" : "object",
   "properties" : {
     "stepName" : {
-      "pattern" : "^([A-Za-z0-9_-]*)?$",
-      "type" : "string"
+      "$ref" : "#/components/schemas/NameString"
     },
     "segmentName" : {
-      "pattern" : "^([A-Za-z0-9_-]*)?$",
-      "type" : "string"
+      "$ref" : "#/components/schemas/NameString"
     },
     "artifactCollectorSpecifications" : {
+      "maxItems" : 20,
       "minItems" : 1,
       "type" : "array",
       "items" : {
@@ -913,15 +914,10 @@ ul.nav-tabs {
   "type" : "object",
   "properties" : {
     "uri" : {
-      "maxLength" : 1024,
-      "pattern" : "^(?!.*\\\\).*$",
-      "type" : "string"
+      "$ref" : "#/components/schemas/UnixPath"
     },
     "hash" : {
-      "maxLength" : 64,
-      "minLength" : 64,
-      "pattern" : "^[0-9a-f]*$",
-      "type" : "string"
+      "$ref" : "#/components/schemas/SHA256Hash"
     }
   }
 };
@@ -930,8 +926,7 @@ ul.nav-tabs {
   "type" : "object",
   "properties" : {
     "name" : {
-      "pattern" : "^([A-Za-z0-9_-]*)?$",
-      "type" : "string"
+      "$ref" : "#/components/schemas/NameString"
     },
     "type" : {
       "type" : "string",
@@ -945,6 +940,7 @@ ul.nav-tabs {
     "context" : {
       "type" : "object",
       "additionalProperties" : {
+        "maxLength" : 1024,
         "type" : "string"
       },
       "description" : "additional key value pair attributes that can very per collector type for XLDEPLOY the key is 'applicationName'"
@@ -967,8 +963,8 @@ ul.nav-tabs {
     defs["HierarchyMode"] = {
   "type" : "string",
   "description" : "The mode of the returned descendants in a tree node hierarchy. ALL returns all descendants, NONE returns nodes without any descendants , MAX_DEPTH returns descendants up to a specified depth",
-  "enum" : [ "ALL", "NONE", "MAX_DEPTH" ],
-  "default" : "NONE"
+  "default" : "NONE",
+  "enum" : [ "ALL", "NONE", "MAX_DEPTH" ]
 };
     defs["KeyAlgorithm"] = {
   "type" : "string",
@@ -982,12 +978,10 @@ ul.nav-tabs {
       "$ref" : "#/components/schemas/KeyId"
     },
     "publicKey" : {
-      "type" : "string",
-      "format" : "byte"
+      "$ref" : "#/components/schemas/ByteString"
     },
     "encryptedPrivateKey" : {
-      "type" : "string",
-      "format" : "byte"
+      "$ref" : "#/components/schemas/ByteString"
     }
   }
 };
@@ -996,19 +990,13 @@ ul.nav-tabs {
   "type" : "object",
   "properties" : {
     "id" : {
-      "type" : "string",
-      "readOnly" : true
+      "$ref" : "#/components/schemas/NameString"
     },
     "name" : {
-      "minLength" : 1,
-      "pattern" : "^([a-z]{1}[a-z0-9_]*)?$",
-      "type" : "string"
+      "$ref" : "#/components/schemas/NameString"
     },
     "parentLabelId" : {
-      "maxLength" : 36,
-      "minLength" : 36,
-      "pattern" : "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}?$",
-      "type" : "string"
+      "$ref" : "#/components/schemas/UUID"
     }
   }
 };
@@ -1017,6 +1005,7 @@ ul.nav-tabs {
   "type" : "object",
   "properties" : {
     "keys" : {
+      "maxItems" : 256,
       "minItems" : 1,
       "type" : "array",
       "items" : {
@@ -1024,17 +1013,15 @@ ul.nav-tabs {
       }
     },
     "authorizedKeyIds" : {
+      "maxItems" : 256,
       "minItems" : 1,
       "type" : "array",
       "items" : {
-        "maxLength" : 64,
-        "minLength" : 64,
-        "pattern" : "^[0-9a-f]*$",
-        "type" : "string",
-        "description" : "key id is a hash of the public key"
+        "$ref" : "#/components/schemas/SHA256Hash"
       }
     },
     "expectedEndProducts" : {
+      "maxItems" : 4096,
       "minItems" : 1,
       "type" : "array",
       "items" : {
@@ -1042,6 +1029,7 @@ ul.nav-tabs {
       }
     },
     "layoutSegments" : {
+      "maxItems" : 256,
       "minItems" : 1,
       "type" : "array",
       "items" : {
@@ -1055,6 +1043,7 @@ ul.nav-tabs {
   "type" : "object",
   "properties" : {
     "signatures" : {
+      "maxItems" : 20,
       "minItems" : 1,
       "type" : "array",
       "items" : {
@@ -1071,11 +1060,10 @@ ul.nav-tabs {
   "type" : "object",
   "properties" : {
     "name" : {
-      "minLength" : 1,
-      "pattern" : "^([A-Za-z0-9_-]*)?$",
-      "type" : "string"
+      "$ref" : "#/components/schemas/NameString"
     },
     "steps" : {
+      "maxItems" : 256,
       "minItems" : 1,
       "type" : "array",
       "items" : {
@@ -1089,29 +1077,20 @@ ul.nav-tabs {
   "type" : "object",
   "properties" : {
     "runId" : {
+      "maxLength" : 1024,
       "type" : "string"
     },
     "stepName" : {
-      "minLength" : 1,
-      "pattern" : "^([A-Za-z0-9_-]*)?$",
-      "type" : "string"
+      "$ref" : "#/components/schemas/NameString"
     },
     "layoutSegmentName" : {
-      "minLength" : 1,
-      "pattern" : "^([A-Za-z0-9_-]*)?$",
-      "type" : "string"
+      "$ref" : "#/components/schemas/NameString"
     },
     "materials" : {
-      "type" : "array",
-      "items" : {
-        "$ref" : "#/components/schemas/Artifact"
-      }
+      "$ref" : "#/components/schemas/ArtifactArray"
     },
     "products" : {
-      "type" : "array",
-      "items" : {
-        "$ref" : "#/components/schemas/Artifact"
-      }
+      "$ref" : "#/components/schemas/ArtifactArray"
     }
   }
 };
@@ -1132,10 +1111,10 @@ ul.nav-tabs {
   "type" : "object",
   "properties" : {
     "labelId" : {
-      "pattern" : "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}?$",
-      "type" : "string"
+      "$ref" : "#/components/schemas/UUID"
     },
     "permissions" : {
+      "maxItems" : 20,
       "type" : "array",
       "items" : {
         "$ref" : "#/components/schemas/Permission"
@@ -1148,27 +1127,24 @@ ul.nav-tabs {
   "type" : "object",
   "properties" : {
     "pattern" : {
+      "maxLength" : 1024,
       "type" : "string"
     },
     "sourcePathPrefix" : {
-      "maxLength" : 1024,
-      "pattern" : "^(?!.*\\\\).*$",
-      "type" : "string"
+      "$ref" : "#/components/schemas/UnixPath"
     },
     "destinationType" : {
       "type" : "string",
       "enum" : [ "PRODUCTS", "MATERIALS" ]
     },
     "destinationPathPrefix" : {
-      "maxLength" : 1024,
-      "pattern" : "^(?!.*\\\\).*$",
-      "type" : "string"
+      "$ref" : "#/components/schemas/UnixPath"
     },
     "destinationSegmentName" : {
-      "type" : "string"
+      "$ref" : "#/components/schemas/NameString"
     },
     "destinationStepName" : {
-      "type" : "string"
+      "$ref" : "#/components/schemas/NameString"
     }
   }
 };
@@ -1194,13 +1170,14 @@ ul.nav-tabs {
   "type" : "object",
   "properties" : {
     "id" : {
-      "type" : "string",
-      "readOnly" : true
+      "$ref" : "#/components/schemas/UUID"
     },
     "name" : {
+      "maxLength" : 1024,
       "type" : "string"
     },
     "roles" : {
+      "maxItems" : 20,
       "type" : "array",
       "items" : {
         "$ref" : "#/components/schemas/Role"
@@ -1212,16 +1189,18 @@ ul.nav-tabs {
   "type" : "object",
   "properties" : {
     "id" : {
-      "type" : "string",
-      "readOnly" : true
+      "$ref" : "#/components/schemas/UUID"
     },
     "name" : {
+      "maxLength" : 1024,
       "type" : "string"
     },
     "email" : {
+      "maxLength" : 1024,
       "type" : "string"
     },
     "roles" : {
+      "maxItems" : 20,
       "type" : "array",
       "items" : {
         "$ref" : "#/components/schemas/Role"
@@ -1237,8 +1216,7 @@ ul.nav-tabs {
       "$ref" : "#/components/schemas/KeyId"
     },
     "publicKey" : {
-      "type" : "string",
-      "format" : "byte"
+      "$ref" : "#/components/schemas/ByteString"
     }
   }
 };
@@ -1246,9 +1224,11 @@ ul.nav-tabs {
   "type" : "object",
   "properties" : {
     "releaseArtifacts" : {
+      "maxItems" : 256,
       "minItems" : 1,
       "type" : "array",
       "items" : {
+        "maxItems" : 4096,
         "minItems" : 1,
         "type" : "array",
         "items" : {
@@ -1263,6 +1243,7 @@ ul.nav-tabs {
   "type" : "object",
   "properties" : {
     "artifactCollectorSpecifications" : {
+      "maxItems" : 20,
       "type" : "array",
       "items" : {
         "$ref" : "#/components/schemas/ArtifactCollectorSpecification"
@@ -1274,23 +1255,25 @@ ul.nav-tabs {
   "type" : "object",
   "properties" : {
     "documentId" : {
-      "type" : "string"
+      "$ref" : "#/components/schemas/UUID"
     },
     "releaseDate" : {
       "type" : "string",
       "format" : "date-time"
     },
     "supplyChainPath" : {
-      "type" : "string"
+      "$ref" : "#/components/schemas/HostnameString"
     },
     "releaseArtifacts" : {
+      "maxItems" : 256,
       "minItems" : 1,
       "type" : "array",
       "items" : {
+        "maxItems" : 4096,
         "minItems" : 1,
         "type" : "array",
         "items" : {
-          "type" : "string"
+          "$ref" : "#/components/schemas/SHA256Hash"
         }
       }
     }
@@ -1312,16 +1295,13 @@ ul.nav-tabs {
   "type" : "object",
   "properties" : {
     "id" : {
-      "maxLength" : 36,
-      "type" : "string",
-      "readOnly" : true
+      "$ref" : "#/components/schemas/UUID"
     },
     "name" : {
-      "minLength" : 1,
-      "pattern" : "^([a-z]{1}[a-z0-9_]*)?$",
-      "type" : "string"
+      "$ref" : "#/components/schemas/NameString"
     },
     "permissions" : {
+      "maxItems" : 20,
       "minItems" : 1,
       "type" : "array",
       "items" : {
@@ -1339,23 +1319,24 @@ ul.nav-tabs {
       "enum" : [ "ALLOW", "CREATE", "CREATE_OR_MODIFY", "DELETE", "DISALLOW", "MATCH", "MODIFY", "REQUIRE" ]
     },
     "pattern" : {
+      "maxLength" : 1024,
       "type" : "string"
     },
     "sourcePathPrefix" : {
-      "type" : "string"
+      "$ref" : "#/components/schemas/UnixPath"
     },
     "destinationPathPrefix" : {
-      "type" : "string"
+      "$ref" : "#/components/schemas/UnixPath"
     },
     "destinationSegmentName" : {
-      "type" : "string"
+      "$ref" : "#/components/schemas/NameString"
     },
     "destinationType" : {
       "type" : "string",
       "enum" : [ "PRODUCTS", "MATERIALS" ]
     },
     "destinationStepName" : {
-      "type" : "string"
+      "$ref" : "#/components/schemas/NameString"
     }
   }
 };
@@ -1364,17 +1345,13 @@ ul.nav-tabs {
   "type" : "object",
   "properties" : {
     "id" : {
-      "type" : "string",
-      "readOnly" : true
+      "$ref" : "#/components/schemas/UUID"
     },
     "name" : {
-      "type" : "string"
+      "$ref" : "#/components/schemas/NameString"
     },
     "parentLabelId" : {
-      "maxLength" : 36,
-      "minLength" : 36,
-      "pattern" : "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}?$",
-      "type" : "string"
+      "$ref" : "#/components/schemas/UUID"
     }
   }
 };
@@ -1386,17 +1363,13 @@ ul.nav-tabs {
       "$ref" : "#/components/schemas/KeyId"
     },
     "publicKey" : {
-      "type" : "string",
-      "format" : "byte"
+      "$ref" : "#/components/schemas/ByteString"
     },
     "encryptedPrivateKey" : {
-      "type" : "string",
-      "format" : "byte"
+      "$ref" : "#/components/schemas/ByteString"
     },
     "hashedKeyPassphrase" : {
-      "type" : "string",
-      "description" : "used for authentication of a service account via http basic authentication",
-      "writeOnly" : true
+      "$ref" : "#/components/schemas/HexString"
     }
   }
 };
@@ -1408,10 +1381,7 @@ ul.nav-tabs {
       "$ref" : "#/components/schemas/KeyId"
     },
     "signature" : {
-      "maxLength" : 1024,
-      "minLength" : 80,
-      "pattern" : "^[0-9a-f]*$",
-      "type" : "string"
+      "$ref" : "#/components/schemas/HexString"
     },
     "hashAlgorithm" : {
       "$ref" : "#/components/schemas/HashAlgorithm"
@@ -1426,11 +1396,10 @@ ul.nav-tabs {
   "type" : "object",
   "properties" : {
     "name" : {
-      "minLength" : 1,
-      "pattern" : "^([A-Za-z0-9_-]*)?$",
-      "type" : "string"
+      "$ref" : "#/components/schemas/NameString"
     },
     "authorizedKeyIds" : {
+      "maxItems" : 256,
       "minItems" : 1,
       "type" : "array",
       "items" : {
@@ -1438,17 +1407,20 @@ ul.nav-tabs {
       }
     },
     "requiredNumberOfLinks" : {
+      "maximum" : 20,
       "minimum" : 1,
       "type" : "integer",
       "format" : "int32"
     },
     "expectedMaterials" : {
+      "maxItems" : 4096,
       "type" : "array",
       "items" : {
         "$ref" : "#/components/schemas/Rule"
       }
     },
     "expectedProducts" : {
+      "maxItems" : 4096,
       "type" : "array",
       "items" : {
         "$ref" : "#/components/schemas/Rule"
@@ -1461,20 +1433,13 @@ ul.nav-tabs {
   "type" : "object",
   "properties" : {
     "id" : {
-      "maxLength" : 36,
-      "type" : "string",
-      "readOnly" : true
+      "$ref" : "#/components/schemas/UUID"
     },
     "name" : {
-      "maxLength" : 256,
-      "pattern" : "^([a-z]{1}[a-z0-9-]*)?$",
-      "type" : "string"
+      "$ref" : "#/components/schemas/NameString"
     },
     "parentLabelId" : {
-      "maxLength" : 36,
-      "minLength" : 36,
-      "pattern" : "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}?$",
-      "type" : "string"
+      "$ref" : "#/components/schemas/UUID"
     }
   }
 };
@@ -1492,25 +1457,27 @@ ul.nav-tabs {
   "type" : "object",
   "properties" : {
     "name" : {
-      "type" : "string"
+      "$ref" : "#/components/schemas/NameString"
     },
     "type" : {
       "type" : "string",
       "enum" : [ "LABEL", "SUPPLY_CHAIN", "SERVICE_ACCOUNT" ]
     },
     "referenceId" : {
-      "type" : "string"
+      "$ref" : "#/components/schemas/UUID"
     },
     "hasChildren" : {
       "type" : "boolean"
     },
     "children" : {
+      "maxItems" : 256,
       "type" : "array",
       "items" : {
         "$ref" : "#/components/schemas/TreeNode"
       }
     },
     "permissions" : {
+      "maxItems" : 256,
       "type" : "array",
       "items" : {
         "$ref" : "#/components/schemas/Permission"
@@ -1560,6 +1527,7 @@ ul.nav-tabs {
   "type" : "object",
   "properties" : {
     "expectedProducts" : {
+      "maxItems" : 4096,
       "minItems" : 1,
       "type" : "array",
       "items" : {
@@ -4986,6 +4954,7 @@ $(document).ready(function() {
   "content" : {
     "application/json" : {
       "schema" : {
+        "maxItems" : 20,
         "type" : "array",
         "items" : {
           "$ref" : "#/components/schemas/ApprovalConfiguration"
@@ -9957,6 +9926,7 @@ pub fn main() {
   "content" : {
     "application/json" : {
       "schema" : {
+        "maxItems" : 20,
         "type" : "array",
         "items" : {
           "$ref" : "#/components/schemas/OAuthProvider"
@@ -15604,6 +15574,7 @@ $(document).ready(function() {
   "content" : {
     "application/json" : {
       "schema" : {
+        "maxItems" : 256,
         "type" : "array",
         "description" : "local permission",
         "items" : {
@@ -16052,10 +16023,11 @@ $(document).ready(function() {
   "content" : {
     "application/json" : {
       "schema" : {
+        "maxItems" : 20,
         "type" : "array",
         "description" : "role names",
         "items" : {
-          "type" : "string"
+          "$ref" : "#/components/schemas/NameString"
         }
       }
     }
@@ -23674,7 +23646,7 @@ $(document).ready(function() {
                       <article id="api-Verification-getVerification-0" data-group="User" data-name="getVerification" data-version="0">
                         <div class="pull-left">
                           <h1>getVerification</h1>
-                          <p>checks verification on a release artifact set</p>
+                          <p>checks verification on a release artifact set and possibly domains</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -23703,7 +23675,7 @@ $(document).ready(function() {
 
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Verification-getVerification-0-curl">
-                            <pre class="prettyprint"><code class="language-bsh">curl -X GET -H "Accept: application/json" -H "Authorization: Basic [[basicHash]]" "https://raw.githubusercontent.com/api/supplychain/verification?artifactHashes=&path="</code></pre>
+                            <pre class="prettyprint"><code class="language-bsh">curl -X GET -H "Accept: application/json" -H "Authorization: Basic [[basicHash]]" "https://raw.githubusercontent.com/api/supplychain/verification?artifactHashes=&paths="</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Verification-getVerification-0-java">
                             <pre class="prettyprint"><code class="language-java">import org.openapitools.client.*;
@@ -23729,9 +23701,9 @@ public class VerificationApiExample {
 
         VerificationApi apiInstance = new VerificationApi();
         array[String] artifactHashes = ; // array[String] | 
-        String path = path_example; // String | 
+        array[String] paths = ; // array[String] | 
         try {
-            VerificationResult result = apiInstance.getVerification(artifactHashes, path);
+            VerificationResult result = apiInstance.getVerification(artifactHashes, paths);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling VerificationApi#getVerification");
@@ -23750,9 +23722,9 @@ public class VerificationApiExample {
     public static void main(String[] args) {
         VerificationApi apiInstance = new VerificationApi();
         array[String] artifactHashes = ; // array[String] | 
-        String path = path_example; // String | 
+        array[String] paths = ; // array[String] | 
         try {
-            VerificationResult result = apiInstance.getVerification(artifactHashes, path);
+            VerificationResult result = apiInstance.getVerification(artifactHashes, paths);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling VerificationApi#getVerification");
@@ -23772,13 +23744,13 @@ public class VerificationApiExample {
 [apiConfig setPassword:@"YOUR_PASSWORD"];
 
 array[String] *artifactHashes = ; //  (default to null)
-String *path = path_example; //  (optional) (default to null)
+array[String] *paths = ; //  (optional) (default to null)
 
 VerificationApi *apiInstance = [[VerificationApi alloc] init];
 
-// checks verification on a release artifact set
+// checks verification on a release artifact set and possibly domains
 [apiInstance getVerificationWith:artifactHashes
-    path:path
+    paths:paths
               completionHandler: ^(VerificationResult output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
@@ -23802,7 +23774,7 @@ bearerAuth.password = 'YOUR PASSWORD'
 var api = new ArgosService.VerificationApi()
 var artifactHashes = ; // {array[String]} 
 var opts = {
-  'path': path_example // {String} 
+  'paths':  // {array[String]} 
 };
 
 var callback = function(error, data, response) {
@@ -23839,12 +23811,12 @@ namespace Example
 
             var apiInstance = new VerificationApi();
             var artifactHashes = new array[String](); // array[String] |  (default to null)
-            var path = path_example;  // String |  (optional)  (default to null)
+            var paths = new array[String](); // array[String] |  (optional)  (default to null)
 
             try
             {
-                // checks verification on a release artifact set
-                VerificationResult result = apiInstance.getVerification(artifactHashes, path);
+                // checks verification on a release artifact set and possibly domains
+                VerificationResult result = apiInstance.getVerification(artifactHashes, paths);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -23867,10 +23839,10 @@ OpenAPITools\Client\Configuration::getDefaultConfiguration()->setPassword('YOUR_
 
 $api_instance = new OpenAPITools\Client\Api\VerificationApi();
 $artifactHashes = ; // array[String] | 
-$path = path_example; // String | 
+$paths = ; // array[String] | 
 
 try {
-    $result = $api_instance->getVerification($artifactHashes, $path);
+    $result = $api_instance->getVerification($artifactHashes, $paths);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling VerificationApi->getVerification: ', $e->getMessage(), PHP_EOL;
@@ -23889,10 +23861,10 @@ $WWW::OPenAPIClient::Configuration::password = 'YOUR_PASSWORD';
 
 my $api_instance = WWW::OPenAPIClient::VerificationApi->new();
 my $artifactHashes = []; # array[String] | 
-my $path = path_example; # String | 
+my $paths = []; # array[String] | 
 
 eval { 
-    my $result = $api_instance->getVerification(artifactHashes => $artifactHashes, path => $path);
+    my $result = $api_instance->getVerification(artifactHashes => $artifactHashes, paths => $paths);
     print Dumper($result);
 };
 if ($@) {
@@ -23914,11 +23886,11 @@ openapi_client.configuration.password = 'YOUR_PASSWORD'
 # create an instance of the API class
 api_instance = openapi_client.VerificationApi()
 artifactHashes =  # array[String] |  (default to null)
-path = path_example # String |  (optional) (default to null)
+paths =  # array[String] |  (optional) (default to null)
 
 try: 
-    # checks verification on a release artifact set
-    api_response = api_instance.get_verification(artifactHashes, path=path)
+    # checks verification on a release artifact set and possibly domains
+    api_response = api_instance.get_verification(artifactHashes, paths=paths)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling VerificationApi->getVerification: %s\n" % e)</code></pre>
@@ -23929,10 +23901,10 @@ except ApiException as e:
 
 pub fn main() {
     let artifactHashes = ; // array[String]
-    let path = path_example; // String
+    let paths = ; // array[String]
 
     let mut context = VerificationApi::Context::default();
-    let result = client.getVerification(artifactHashes, path, &context).wait();
+    let result = client.getVerification(artifactHashes, paths, &context).wait();
     println!("{:?}", result);
 
 }
@@ -23977,15 +23949,15 @@ pub fn main() {
 </td>
 </tr>
 
-                                <tr><td style="width:150px;">path</td>
+                                <tr><td style="width:150px;">paths</td>
 <td>
 
 
-    <div id="d2e199_getVerification_path">
+    <div id="d2e199_getVerification_paths">
         <div class="json-schema-view">
             <div class="primitive">
                 <span class="type">
-                    String
+                    array[String]
                 </span>
 
             </div>
