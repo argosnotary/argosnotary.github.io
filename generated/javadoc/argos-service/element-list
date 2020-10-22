@@ -1,5 +1,5 @@
-com.rabobank.argos.service
-com.rabobank.argos.service.security
-com.rabobank.argos.service.security.oauth2
-com.rabobank.argos.service.security.oauth2.user
-com.rabobank.argos.service.swagger
+com.argosnotary.argos.service
+com.argosnotary.argos.service.security
+com.argosnotary.argos.service.security.oauth2
+com.argosnotary.argos.service.security.oauth2.user
+com.argosnotary.argos.service.swagger
